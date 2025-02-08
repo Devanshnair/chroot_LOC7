@@ -15,6 +15,7 @@ import {
   Siren,
 } from "lucide-react";
 import UserImg from "../assets/user.png";
+import SafetyTips from "../Pages/Public(User)/SafetyTips";
 
 interface NavLink {
   path: string;
@@ -51,7 +52,7 @@ const navLinks: NavLink[] = [
     icon: <AlertCircle className="h-5 w-5" />,
   },
   {
-    path: "/incident/report/",
+    path: "/incident/report",
     label: "Reported Incident",
     icon: <Siren className="h-5 w-5" />,
   },
