@@ -1,0 +1,107 @@
+.container {
+    min-height: 100vh;
+    background-color: rgb(249 250 251);
+    padding: 1rem;
+  }
+  
+  .wrapper {
+    /* max-width: 28rem; */
+    margin: 0 auto;
+  }
+  
+  .buttonContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+  }
+  
+  .sosButton {
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
+    background-color: #dc2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .sosButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+  
+  .sosText {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+  
+  .pingCircle {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: rgba(220, 38, 38, 0.3);
+  }
+  
+  .ping1 {
+    animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  
+  .emergencySection {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: rgb(17 24 39);
+    margin-bottom: 1.5rem;
+  }
+  
+  .emergencyButton {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .emergencyButton:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  @keyframes ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    75%, 100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .sosButton, .pingCircle {
+      width: 200px;
+      height: 200px;
+    }
+    
+    .sosText {
+      font-size: 2rem;
+    }
+  }

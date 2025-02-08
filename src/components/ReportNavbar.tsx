@@ -1,21 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Menu,
-  X,
-  Home,
-  FileText,
-  Map,
-  User,
-  User2,
-  User2Icon,
-  LogOut,
-  LucideLogOut,
-  LogOutIcon,
-  AlertTriangle,
-  AlertCircle,
-  MessageCircle,
-} from "lucide-react";
+import { Menu, X, Home, FileText, Map, User, User2 } from "lucide-react";
 import UserImg from "../assets/user.png";
 
 interface NavLink {
@@ -24,42 +9,8 @@ interface NavLink {
   icon: React.ReactNode;
 }
 
-const navLinks: NavLink[] = [
-  { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-  {
-    path: "/cases",
-    label: "Case Management",
-    icon: <FileText className="h-5 w-5" />,
-  },
-  { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
-  {
-    path: "/chats",
-    label: "Chats",
-    icon: <MessageCircle className="h-5 w-5" />,
-  },
-  {
-    path: "/user/profile",
-    label: "Profile",
-    icon: <User className="h-5 w-5" />,
-  },
-  {
-    path: "/user/sos",
-    label: "SOS",
-    icon: <AlertTriangle className="h-5 w-5" />,
-  },
-  {
-    path: "/user/emergencycontacts",
-    label: "Emergency Contacts",
-    icon: <AlertCircle className="h-5 w-5" />,
-  },
-];
-
-const Navbar = () => {
+const ReportNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(
-    localStorage.getItem("accessToken") ? true : false
-  );
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -91,27 +42,24 @@ const Navbar = () => {
     };
   }, [isMobileMenuOpen]);
 
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIsLoggedIn(!!localStorage.getItem("accessToken"));
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  // Logout function
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    setIsLoggedIn(false); // Ensure immediate UI update
-    setIsDropdownOpen(false);
-  };
+  const navLinks: NavLink[] = [
+    { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
+    {
+      path: "/cases",
+      label: "Case Management",
+      icon: <FileText className="h-5 w-5" />,
+    },
+    { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
+    {
+      path: "/user/profile",
+      label: "Profile",
+      icon: <User className="h-5 w-5" />,
+    },
+  ];
 
   return (
-    <nav className="bg-white shadow-md relative z-50">
-      <div className="w-screen px-6 py-5 flex justify-between items-center">
-        {/* Mobile menu button */}
+    <nav className="bg-white fixed top-0 shadow-md  w-full z-50">
+      <div className="container mx-auto px-6 py-5 flex items-center">
         <button
           id="menu-button"
           type="button"
@@ -129,8 +77,13 @@ const Navbar = () => {
           <h2 className="font-bold text-2xl">Digital Police Force </h2>
         </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex justify-center items-center space-x-6">
+        <Link to={"/user/login"}>
+          <button className="bg-indigo-500 text-white font-medium text-xl px-4 py-2 rounded-lg">
+            Login
+          </button>
+        </Link>
+
+        <div className="hidden md:flex items-center ml-auto space-x-6">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -141,34 +94,6 @@ const Navbar = () => {
             </Link>
           ))}
         </div>
-
-        {!isLoggedIn ? (
-          <Link to={"/user/login"}>
-            <button className="bg-indigo-500 text-white font-medium text-xl px-4 py-2 rounded-lg cursor-pointer">
-              Login
-            </button>
-          </Link>
-        ) : (
-          <div className="relative">
-            <button
-              className="h-10 w-10 p-1 rounded-full bg-slate-300 ml-4 relative cursor-pointer"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              <User2Icon className="h-full w-full" color="white" />
-            </button>
-            {isDropdownOpen && (
-              <div className="flex justify-center items-center gap-2 bg-slate-300 absolute -bottom-9 right-0 p-1 rounded-sm cursor-pointer">
-                <LogOutIcon
-                  color="white"
-                  onClick={() => setIsDropdownOpen(false)}
-                />
-                <p className="text-lg text-white" onClick={handleLogout}>
-                  Logout
-                </p>
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       {isMobileMenuOpen && (
@@ -221,4 +146,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default ReportNavbar;

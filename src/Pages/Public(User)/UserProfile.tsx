@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Check, Loader2, Camera, Upload } from 'lucide-react';
 import { baseUrl } from '../../App';
+import { jwtDecode } from 'jwt-decode';
 
 interface UserData {
   fullName: string;
@@ -18,12 +19,16 @@ const UserProfile = () => {
     isAadharVerified: false,
     photo: null
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [error, setError] = useState('');
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const token = localStorage.getItem("accessToken");
+  const decoded = token ? jwtDecode(token) : null;
+  console.log(decoded)
 
   useEffect(() => {
     fetchUserData();
@@ -32,11 +37,12 @@ const UserProfile = () => {
   const fetchUserData = async () => {
     try {
       setIsLoading(true);
-      const response = await await fetch(`${baseUrl}/api/users/1`, {
+      const accessToken = localStorage.getItem("accessToken")
+      const response = await await fetch(`${baseUrl}/api/me`, {
         method: "GET",
         headers: {
           "ngrok-skip-browser-warning": "69420",
-        //   authorization: `Bearer ${accessToken}`,
+          authorization: `Bearer ${accessToken}`,
         },
       });
       if (!response.ok) throw new Error('Failed to fetch user data');
@@ -117,9 +123,8 @@ const UserProfile = () => {
       setIsLoading(true);
       const formData = new FormData();
       const first_name = userData.fullName.split(" ")[0]
-      console.log(first_name);
-      
       const last_name = userData.fullName.split(" ")[1]
+
       // Append text data
       formData.append('first_name', first_name);
       formData.append('last_name', last_name);
@@ -132,10 +137,13 @@ const UserProfile = () => {
         formData.append('photo', fileInputRef.current.files[0]);
       }
 
-      const response = await fetch(`${baseUrl}/api/user/profile`, {
+      const accessToken = localStorage.getItem("accessToken")
+      const response = await fetch(`${baseUrl}/api/users/${decoded?.id}/`, {
         method: 'PATCH',
         body: formData,
-        credentials: 'include'
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       if (!response.ok) throw new Error('Failed to update profile');

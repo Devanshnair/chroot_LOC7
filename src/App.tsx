@@ -14,8 +14,10 @@ import UserRegister from "./Pages/Auth/UserRegister";
 import UserProfile from "./Pages/Public(User)/UserProfile";
 import ReportIncidents from "./Pages/Public(User)/ReportIncidents";
 import EmergencyContacts from "./Pages/Public(User)/EmergencyContacts";
-import SOS from "./Pages/Public(User)/SOS";
+import SOS from "./Pages/Public(User)/SOS/SOS";
 import SafetyTips from "./Pages/Public(User)/SafetyTips";
+import IncidentDetails from "./Pages/IncidentReport/IncidentDetails";
+import ReportLayout from "./layouts/ReportLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const baseUrl = "https://natural-ape-severely.ngrok-free.app";
@@ -39,7 +41,7 @@ function App() {
 
             <Route path="/user/login" element={<UserLogin />} />
             <Route path="/user/register" element={<UserRegister />} />
-            <Route path="/incident/report" element={<IncidentReport />} />
+
             <Route path="/user/profile" element={<UserProfile />} />
             <Route path="/user/report" element={<ReportIncidents />} />
             <Route
@@ -48,10 +50,17 @@ function App() {
             />
             <Route path="/user/sos" element={<SOS />} />
             <Route path="/user/blogs" element={<SafetyTips />} />
+            <Route path="/chat" element={<Chatlayout />} />
           </Route>
-          <Route path="/chats" element={<Chatlayout />} />
           <Route path="map" element={<Maplayout />}>
             <Route index element={<Map />} />
+          </Route>
+          <Route path="incident" element={<ReportLayout />}>
+            <Route path="/incident/report/" element={<IncidentReport />} />
+            <Route
+              path="/incident/details/:incidentId"
+              element={<IncidentDetails />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
