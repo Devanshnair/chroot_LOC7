@@ -22,7 +22,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   useEffect(() => {
     const ws = new WebSocket(
       // prettier-ignore
-      `ws://natural-ape-severely.ngrok-free.app/ws/dm/${chat.userId}/${currentUserId}/?token=${localStorage.getItem("accessToken")}`
+      `wss://natural-ape-severely.ngrok-free.app/ws/dm/${chat.userId}/${currentUserId}/?token=${localStorage.getItem("accessToken")}`
     );
 
     ws.onopen = () => {
@@ -92,7 +92,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div className="chat-window min-h-full">
-      <h2 className="flex gap-2 bg-green-50">
+      <h2 className="flex gap-2 bg-indigo-50">
         <span>
           <User className="size-5" />
         </span>

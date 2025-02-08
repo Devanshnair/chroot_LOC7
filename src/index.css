@@ -68,7 +68,7 @@
 }
 
 .message.sent {
-  background-color: #dcf8c6;
+  background-color: oklch(0.93 0.034 272.788);
   align-self: flex-end;
   margin-left: auto;
 }
@@ -93,7 +93,7 @@
 .message-input button {
   margin-left: 5px;
   padding: 5px 10px;
-  background-color: #4caf50;
+  background-color: #432dd7;
   color: white;
   border: none;
 

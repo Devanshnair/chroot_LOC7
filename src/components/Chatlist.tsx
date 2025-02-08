@@ -22,7 +22,7 @@ const ChatList: React.FC<ChatListProps> = ({
   const navigate = useNavigate();
   return (
     <div className="chat-list border-r">
-      <div className="bg-green-50 flex items-center">
+      <div className="bg-indigo-50 flex items-center">
         <button onClick={() => navigate(-1)}>
           <ArrowLeftCircleIcon className="size-5 ml-2" />
         </button>
@@ -35,9 +35,9 @@ const ChatList: React.FC<ChatListProps> = ({
           <input
             type="text"
             placeholder="Enter user name to add"
-            className="border border-r-0 rounded-l-md focus:outline-none  focus:border-green-500 p-2 w-full text-gray-700" // Added styling here
+            className="border border-r-0 rounded-l-md focus:outline-none  focus:border-indigo-500 p-2 w-full text-gray-700" // Added styling here
           />
-          <button className="bg-green-500 hover:bg-green-700 text-white p-2 px-4 rounded-r-md text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 px-4 rounded-r-md text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
             Add
           </button>
         </fieldset>
