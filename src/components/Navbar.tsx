@@ -13,10 +13,12 @@ import {
   AlertCircle,
   MessageCircle,
   Siren,
-  ChevronDown, // Icon for dropdown arrow
+  FlagTriangleRight,
+  ShieldCheck,
+  Phone,
 } from "lucide-react";
 import UserImg from "../assets/user.png";
-import SafetyTips from "../Pages/Public(User)/SafetyTips";
+import { jwtDecode } from "jwt-decode";
 
 interface NavLink {
   path: string;
@@ -24,22 +26,29 @@ interface NavLink {
   icon: React.ReactNode;
 }
 
-const coreNavLinks: NavLink[] = [
+const decoded = jwtDecode(localStorage.getItem("accessToken") || "");
+
+const commonNavLinks: NavLink[] = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-  {
-    path: "/cases",
-    label: "Cases",
-    icon: <FileText className="h-5 w-5" />,
-  },
   { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
+];
+
+const officerNavLinks: NavLink[] = [
+  { path: "/cases", label: "Cases", icon: <FileText className="h-5 w-5" /> },
   {
     path: "/chats",
     label: "Chats",
     icon: <MessageCircle className="h-5 w-5" />,
   },
+  {
+    path: "/incident/report",
+    label: "Reports",
+    icon: <Siren className="h-5 w-5" />,
+  },
 ];
 
-const moreNavLinks: NavLink[] = [
+const userNavLinks: NavLink[] = [
+  { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
   {
     path: "/user/profile",
     label: "Profile",
@@ -51,16 +60,26 @@ const moreNavLinks: NavLink[] = [
     icon: <AlertTriangle className="h-5 w-5" />,
   },
   {
+    path: "/user/report",
+    label: "Report an Incident",
+    icon: <FlagTriangleRight className="h-5 w-5" />,
+  },
+  { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
+  {
     path: "/user/emergencycontacts",
     label: "Emergency Contacts",
-    icon: <AlertCircle className="h-5 w-5" />,
+    icon: <Phone className="h-5 w-5" />,
   },
   {
-    path: "/incident/report",
-    label: "Report Incident",
-    icon: <Siren className="h-5 w-5" />,
+    path: "/user/blogs",
+    label: "Safety Tips",
+    icon: <ShieldCheck className="h-5 w-5" />,
   },
 ];
+
+const navLinks = decoded.is_officer
+  ? [...commonNavLinks, ...officerNavLinks]
+  : userNavLinks;
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -255,13 +274,9 @@ const Navbar = () => {
             <div className="flex justify-between items-center mb-8">
               <div className="flex justify-center items-center gap-5">
                 <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
-                  <img
-                    src={UserImg}
-                    className="h-full w-full object-cover"
-                    alt="User Profile"
-                  />
+                  <img src={UserImg} className="h-full w-full object-cover" />
                 </button>
-                <h2 className="font-bold text-xl">Copco</h2>
+                <h2 className="font-bold text-xl">Copco </h2>
               </div>
 
               <button
