@@ -13,7 +13,7 @@ import UserRegister from "./Pages/Auth/UserRegister";
 import UserProfile from "./Pages/Public(User)/UserProfile";
 import ReportIncidents from "./Pages/Public(User)/ReportIncidents";
 import EmergencyContacts from "./Pages/Public(User)/EmergencyContacts";
-import SOS from "./Pages/Public(User)/SOS";
+import SOS from "./Pages/Public(User)/SOS/SOS";
 import SafetyTips from "./Pages/Public(User)/SafetyTips";
 
 export const baseUrl = "https://natural-ape-severely.ngrok-free.app";

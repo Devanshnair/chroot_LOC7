@@ -39,7 +39,7 @@ const UserLogin = () => {
       
       localStorage.setItem("accessToken", data.access);
       localStorage.setItem("refreshToken", data.refresh);
-
+      window.dispatchEvent(new Event("storage"))
       navigate("/");
     }
   };
