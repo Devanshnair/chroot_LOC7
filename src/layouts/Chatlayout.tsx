@@ -50,6 +50,7 @@ export default function Chatlayout() {
   });
 
   const [selectedChat, setSelectedChat] = useState<number>();
+  const [view, setView] = useState<"chat-window" | "chat-list">("chat-list");
 
   useEffect(() => {
     if (chatsData) setChats(chatsData);
@@ -64,19 +65,32 @@ export default function Chatlayout() {
 
   return (
     <div className="chat-app">
-      {chats && (
-        <ChatList
-          chats={chats || []}
-          selectedChat={selectedChat || chats[0].userId}
-          onSelectChat={setSelectedChat}
-        />
-      )}
-
-      {chats && currentUser && (
+      {view == "chat-list"
+        ? chats && (
+            <ChatList
+              chats={chats || []}
+              selectedChat={selectedChat || chats[0].userId}
+              onSelectChat={setSelectedChat}
+              setView={setView}
+            />
+          )
+        : chats &&
+          currentUser && (
+            <ChatWindow
+              chat={
+                chats.find((chat) => chat.userId === selectedChat) || chats[0]
+              }
+              currentUserId={currentUser.id}
+              setChats={setChats}
+              setView={setView}
+            />
+          )}
+      {window.innerWidth > 768 && chats && currentUser && (
         <ChatWindow
           chat={chats.find((chat) => chat.userId === selectedChat) || chats[0]}
           currentUserId={currentUser.id}
           setChats={setChats}
+          setView={setView}
         />
       )}
     </div>

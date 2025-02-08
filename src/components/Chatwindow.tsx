@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { ArrowLeftCircleIcon, User } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Chat, Message } from "../layouts/Chatlayout";
@@ -7,12 +7,14 @@ interface ChatWindowProps {
   chat: Chat;
   currentUserId: number;
   setChats: React.Dispatch<React.SetStateAction<Chat[] | null>>;
+  setView: React.Dispatch<React.SetStateAction<"chat-window" | "chat-list">>;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
   chat,
   currentUserId,
   setChats,
+  setView,
 }) => {
   console.log(currentUserId);
   // const [messages, setMessages] = useState<Message[]>([]);
@@ -92,9 +94,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div className="chat-window min-h-full">
-      <h2 className="flex gap-2 bg-green-50">
+      <h2 className="flex gap-2 bg-green-50 text-lg font-semibold text-green-500 p-4">
+        {window.innerWidth < 768 && (
+          <button onClick={() => setView("chat-list")}>
+            <ArrowLeftCircleIcon className="size-5 mr-1" />
+          </button>
+        )}
+
         <span>
-          <User className="size-5" />
+          <User className="size-5=6" />
         </span>
         {chat.name}
       </h2>

@@ -8,6 +8,7 @@ interface ChatListProps {
   chats: Chat[];
   selectedChat: number | null;
   onSelectChat: (chatId: number) => void;
+  setView: React.Dispatch<React.SetStateAction<"chat-window" | "chat-list">>;
 }
 
 function onsubmit(e: React.FormEvent) {
@@ -18,17 +19,17 @@ const ChatList: React.FC<ChatListProps> = ({
   chats,
   selectedChat,
   onSelectChat,
+  setView,
 }) => {
   const navigate = useNavigate();
   return (
-    <div className="chat-list border-r">
-      <div className="bg-green-50 flex items-center">
+    <div className="chat-list border-r w-full md:w-1/4">
+      <h2 className="text-lg font-semibold text-green-500 p-4 flex items-center bg-green-50">
         <button onClick={() => navigate(-1)}>
-          <ArrowLeftCircleIcon className="size-5 ml-2" />
-        </button>
-
-        <h2>Chats</h2>
-      </div>
+          <ArrowLeftCircleIcon className="size-5 mr-2" />
+        </button>{" "}
+        Chats
+      </h2>
 
       <form onSubmit={onsubmit} className="p-2">
         <fieldset className="flex">
@@ -48,7 +49,10 @@ const ChatList: React.FC<ChatListProps> = ({
           <li
             key={chat.userId}
             className={chat.userId === selectedChat ? "selected" : ""}
-            onClick={() => onSelectChat(chat.userId)}
+            onClick={() => {
+              onSelectChat(chat.userId);
+              if (window.innerWidth < 768) setView("chat-window");
+            }}
           >
             {chat.name}
           </li>

@@ -50,8 +50,8 @@ function App() {
             />
             <Route path="/user/sos" element={<SOS />} />
             <Route path="/user/blogs" element={<SafetyTips />} />
-            <Route path="/chat" element={<Chatlayout />} />
           </Route>
+          <Route path="/chats" element={<Chatlayout />} />
           <Route path="map" element={<Maplayout />}>
             <Route index element={<Map />} />
           </Route>
