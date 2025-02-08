@@ -8,7 +8,7 @@ import { baseUrl } from "../../App";
 const UserLogin = () => {
 
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +18,7 @@ const UserLogin = () => {
     e.preventDefault();
     setLoading(true);
     const formData = {
-      email,
+      username,
       password,
     };
 
@@ -54,13 +54,13 @@ const UserLogin = () => {
             <form onSubmit={handleForm}>
               <div className="mb-4 flex flex-col">
                 <label className="text-sm font-semibold text-[#1f1f1f]">
-                  email
+                  username
                 </label>
                 <input
                   type="text"
-                  placeholder="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="my-2 w-96 rounded-md border-[1px] border-solid border-[#cdcdcd] py-2 pl-3 placeholder:text-[#cccccc]"
                 />
               </div>
