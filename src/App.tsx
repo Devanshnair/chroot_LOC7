@@ -15,6 +15,8 @@ import ReportIncidents from "./Pages/Public(User)/ReportIncidents";
 import EmergencyContacts from "./Pages/Public(User)/EmergencyContacts";
 import SOS from "./Pages/Public(User)/SOS";
 import SafetyTips from "./Pages/Public(User)/SafetyTips";
+import IncidentDetails from "./Pages/IncidentReport/IncidentDetails";
+import ReportLayout from "./layouts/ReportLayout";
 
 export const baseUrl = "https://natural-ape-severely.ngrok-free.app";
 
@@ -34,16 +36,25 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
-          <Route path="/incident/report" element={<IncidentReport />} />
+
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user/report" element={<ReportIncidents />} />
-          <Route path="/user/emergencycontacts" element={<EmergencyContacts />} />
-          <Route path="/user/sos" element={<SOS/>} />
+          <Route
+            path="/user/emergencycontacts"
+            element={<EmergencyContacts />}
+          />
+          <Route path="/user/sos" element={<SOS />} />
           <Route path="/user/blogs" element={<SafetyTips />} />
-
         </Route>
         <Route path="map" element={<Maplayout />}>
           <Route index element={<Map />} />
+        </Route>
+        <Route path="incident" element={<ReportLayout />}>
+          <Route path="/incident/report/" element={<IncidentReport />} />
+          <Route
+            path="/incident/details/:incidentId"
+            element={<IncidentDetails />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
