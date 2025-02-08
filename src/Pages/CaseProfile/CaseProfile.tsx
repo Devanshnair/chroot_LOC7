@@ -172,7 +172,7 @@ export default function CaseProfile() {
                 <textarea
                   value={notes}
                   onChange={handleNotesChange}
-                  className="w-full h-48 p-2 border rounded-md text-gray-700 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full h-48 p-2 border rounded-md text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
