@@ -62,6 +62,12 @@ function Navbar() {
             >
               Map
             </Link>
+            <Link
+              to="/login"
+              className="block px-4 py-2 text-sm text-gray-800 hover:text-indigo-600 mt-2 md:mt-0 md:ml-2"
+            >
+              Login
+            </Link>
           </div>
         </div>
       </div>
