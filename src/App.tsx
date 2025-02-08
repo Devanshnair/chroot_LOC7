@@ -6,6 +6,7 @@ import Mainlayout from "./layouts/Mainlayout";
 import Map from "./Pages/Map/Map";
 import Maplayout from "./layouts/Maplayout";
 import CaseProfile from "./Pages/CaseProfile/CaseProfile";
+import CreateCase from "./Pages/CreateCase/CreateCase";
 
 function App() {
   return (
@@ -13,8 +14,13 @@ function App() {
       <Routes>
         <Route element={<Mainlayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/cases/:caseId" element={<CaseProfile />} />
           <Route path="/cases" element={<CaseManagementPage />} />
+          <Route
+            path="/cases/new"
+            element={<CreateCase onCaseCreated={() => {}} />}
+          />
+          <Route path="/cases/:caseId" element={<CaseProfile />} />
+
           <Route path="/map" element={<Map />} />
         </Route>
         <Route path="map" element={<Maplayout />}>
