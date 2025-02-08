@@ -110,7 +110,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md relative z-50">
-      <div className="w-screen px-6 py-5 flex justify-between items-center">
+      <div className="px-6 py-5 flex justify-between items-center">
         {/* Mobile menu button */}
         <button
           id="menu-button"
