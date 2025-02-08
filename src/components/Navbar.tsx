@@ -56,6 +56,12 @@ function Navbar() {
             >
               Case Management
             </Link>
+            <Link
+              to="/map"
+              className="block px-4 py-2 text-sm text-gray-800 hover:text-indigo-600 mt-2 md:mt-0 md:ml-2"
+            >
+              Map
+            </Link>
           </div>
         </div>
       </div>
