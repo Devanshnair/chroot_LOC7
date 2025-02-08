@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Home, FileText, Map, User, User2, User2Icon, LogOut, LucideLogOut, LogOutIcon, AlertTriangle, AlertCircle } from "lucide-react";
+import { Menu, X, Home, FileText, Map, User, User2, User2Icon, LogOut, LucideLogOut, LogOutIcon, AlertTriangle, AlertCircle, FlagTriangleLeft, FlagTriangleRight, Phone, Shield, ShieldCheck } from "lucide-react";
 import UserImg from "../assets/user.png"
+import SafetyTips from "../Pages/Public(User)/SafetyTips";
 
 interface NavLink {
   path: string;
@@ -15,7 +16,9 @@ const navLinks: NavLink[] = [
   { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
   { path: "/user/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
   { path: "/user/sos", label: "SOS", icon: <AlertTriangle className="h-5 w-5" /> },
-  { path: "/user/emergencycontacts", label: "Emergency Contacts", icon: <AlertCircle className="h-5 w-5" /> },
+  { path: "/user/report", label: "Report an Incident", icon: <FlagTriangleRight className="h-5 w-5" /> },
+  { path: "/user/emergencycontacts", label: "Emergency Contacts", icon: <Phone className="h-5 w-5" /> },
+  { path: "/user/blogs", label: "Safety Tips", icon: <ShieldCheck className="h-5 w-5" /> },
 ];
 
 const Navbar = () => {
