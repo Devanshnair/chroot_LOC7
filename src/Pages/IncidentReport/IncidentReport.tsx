@@ -10,146 +10,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import { Calendar, Clock, Filter, MapPin, Search } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-
-
-
-const incidents = [
-  {
-    id: "12346",
-    date: "2023-07-22",
-    time: "10:15",
-    location: "Andheri West, Mumbai",
-    coordinates: [19.1331, 72.8347],
-    type: "Robbery",
-    description: "A purse was snatched from a pedestrian near Andheri Station.",
-    reportedBy: "Amit Patel",
-    status: "Under Investigation",
-    media: [
-      { type: "photo", url: "/placeholder.svg?height=300&width=300" },
-      { type: "video", url: "/placeholder.svg?height=300&width=300" },
-    ],
-  },
-  {
-    id: "12347",
-    date: "2023-08-10",
-    time: "18:00",
-    location: "Colaba, Mumbai",
-    coordinates: [18.929, 72.834],
-    type: "Vandalism",
-    description: "Graffiti was found on a public wall in Colaba area.",
-    reportedBy: "Rita Desai",
-    status: "Closed",
-    media: [{ type: "photo", url: "/placeholder.svg?height=300&width=300" }],
-  },
-  {
-    id: "12348",
-    date: "2023-09-03",
-    time: "02:45",
-    location: "Bandra, Mumbai",
-    coordinates: [19.0633, 72.8278],
-    type: "Theft",
-    description: "A car was stolen from a residential parking lot in Bandra.",
-    reportedBy: "Nikhil Sharma",
-    status: "Under Investigation",
-    media: [
-      { type: "photo", url: "/placeholder.svg?height=300&width=300" },
-      { type: "video", url: "/placeholder.svg?height=300&width=300" },
-    ],
-  },
-  {
-    id: "12349",
-    date: "2023-10-01",
-    time: "11:30",
-    location: "Dadar, Mumbai",
-    coordinates: [19.0212, 72.835],
-    type: "Hit-and-Run",
-    description: "A pedestrian was hit by a speeding vehicle in Dadar.",
-    reportedBy: "Sunil Kumar",
-    status: "Under Investigation",
-    media: [{ type: "photo", url: "/placeholder.svg?height=300&width=300" }],
-  },
-  {
-    id: "12350",
-    date: "2023-09-20",
-    time: "14:00",
-    location: "Churchgate, Mumbai",
-    coordinates: [18.9351, 72.8263],
-    type: "Burglary",
-    description: "Jewelry was stolen from an apartment in Churchgate.",
-    reportedBy: "Meera Rao",
-    status: "Under Investigation",
-    media: [{ type: "photo", url: "/placeholder.svg?height=300&width=300" }],
-  },
-  {
-    id: "12351",
-    date: "2023-11-05",
-    time: "16:30",
-    location: "Lower Parel, Mumbai",
-    coordinates: [18.9982, 72.8266],
-    type: "Assault",
-    description:
-      "A fight broke out in a restaurant in Lower Parel, leaving one person injured.",
-    reportedBy: "Pratik Singh",
-    status: "Closed",
-    media: [{ type: "photo", url: "/placeholder.svg?height=300&width=300" }],
-  },
-  {
-    id: "12352",
-    date: "2023-12-10",
-    time: "08:15",
-    location: "Boregaon, Mumbai",
-    coordinates: [19.1548, 72.9043],
-    type: "Fraud",
-    description:
-      "An online scam involving fake job offers targeting local residents.",
-    reportedBy: "Snehal Joshi",
-    status: "Under Investigation",
-    media: [
-      { type: "photo", url: "/placeholder.svg?height=300&width=300" },
-      { type: "video", url: "/placeholder.svg?height=300&width=300" },
-    ],
-  },
-  {
-    id: "12353",
-    date: "2023-11-22",
-    time: "21:00",
-    location: "Powai, Mumbai",
-    coordinates: [19.1292, 72.9131],
-    type: "Traffic Incident",
-    description:
-      "A major car accident occurred near the Powai lake, causing a traffic jam.",
-    reportedBy: "Vishal Mehta",
-    status: "Closed",
-    media: [{ type: "photo", url: "/placeholder.svg?height=300&width=300" }],
-  },
-  {
-    id: "12354",
-    date: "2023-12-03",
-    time: "13:45",
-    location: "Malad, Mumbai",
-    coordinates: [19.186, 72.8497],
-    type: "Arson",
-    description:
-      "A small fire broke out in a shop in Malad, causing significant damage.",
-    reportedBy: "Ayesha Khan",
-    status: "Under Investigation",
-    media: [{ type: "photo", url: "/placeholder.svg?height=300&width=300" }],
-  },
-  {
-    id: "12355",
-    date: "2023-12-15",
-    time: "20:00",
-    location: "Juhu, Mumbai",
-    coordinates: [19.0974, 72.8267],
-    type: "Drunk Driving",
-    description:
-      "A vehicle was stopped after a drunk driver was seen swerving on the road near Juhu Beach.",
-    reportedBy: "Simran Verma",
-    status: "Under Investigation",
-    media: [{ type: "photo", url: "/placeholder.svg?height=300&width=300" }],
-  },
-];
-
+import { baseUrl } from "../../App";
 
 const IncidentReport: React.FC = () => {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
@@ -158,6 +19,40 @@ const IncidentReport: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<
     [number, number] | null
   >(null);
+  const [incidents, setIncidents] = useState([]);
+
+  const fetchData = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await fetch(`${baseUrl}/api/cases/incidents/`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
+
+    const data = await response.json();
+    const transformedData = data.map((incident) => ({
+      id: incident.id.toString(),
+      date: incident.created_at,
+      time: new Date(incident.created_at).toLocaleTimeString(),
+      location: incident.location,
+      coordinates: incident.coordinates,
+      type: incident.incident_type,
+      description: incident.description,
+      reportedBy: `${incident.reported_by.first_name} ${incident.reported_by.last_name}`,
+      status: incident.status,
+      media: [], // Assuming no media in the API response
+    }));
+    console.log(transformedData);
+    
+    setIncidents(transformedData);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const MapController: React.FC<{ center: [number, number] | null }> = ({
     center,
@@ -165,7 +60,7 @@ const IncidentReport: React.FC = () => {
     const map = useMap();
     useEffect(() => {
       if (center) {
-        map.setView(center, 13); // Fixed zoom level
+        map.setView(center, 13);
       }
     }, [center, map]);
     return null;
@@ -182,7 +77,7 @@ const IncidentReport: React.FC = () => {
         },
         (error) => {
           console.error("Error getting location:", error.message);
-          setUserLocation([19.076, 72.8777]); // Default to Mumbai coordinates
+          setUserLocation([19.076, 72.8777]);
         }
       );
     } else {
@@ -192,7 +87,7 @@ const IncidentReport: React.FC = () => {
   }, []);
 
   const handleViewMapClick = (coordinates: [number, number]) => {
-    setSelectedLocation(coordinates); 
+    setSelectedLocation(coordinates);
   };
 
   return (
@@ -243,7 +138,7 @@ const IncidentReport: React.FC = () => {
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center text-gray-600">
                     <Calendar className="w-4 h-4 mr-2" />
-                    <span>{incident.date}</span>
+                    <span>{incident.date.split("T")[0]}</span>
                   </div>
                   <div className="flex items-center text-gray-600">
                     <Clock className="w-4 h-4 mr-2" />
@@ -261,7 +156,10 @@ const IncidentReport: React.FC = () => {
                   >
                     View on Map
                   </button>
-                  <Link to={`/incident/details/${incident.id}`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                  <Link
+                    to={`/incident/details/${incident.id}`}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                  >
                     View Details
                   </Link>
                 </div>

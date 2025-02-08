@@ -107,10 +107,9 @@ const Navbar = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // Logout function
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsLoggedIn(false); // Ensure immediate UI update
+    setIsLoggedIn(false); 
     setIsDropdownOpen(false);
   };
 
@@ -136,12 +135,12 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex justify-center items-center space-x-6">
+        <div className="hidden md:flex justify-center items-center md:gap-5">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
-              className="text-gray-800 hover:text-indigo-600 transition duration-150"
+              className="text-gray-800 text-center hover:text-indigo-600 transition duration-150"
             >
               {link.label}
             </Link>
