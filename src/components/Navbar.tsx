@@ -70,7 +70,7 @@ const Navbar = () => {
           <h2 className="font-bold text-2xl">Digital Police Force </h2>
         </div>
 
-        <Link to={'/login'}>
+        <Link to={'/user/login'}>
         <button className="bg-indigo-500 text-white font-medium text-xl px-4 py-2 rounded-lg">
           Login
         </button>
