@@ -18,6 +18,7 @@ export default defineConfig({
         swDest: "dist/sw.js",
       },
       manifest: {
+        scope: "/",
         name: "DigiPolice",
         short_name: "DigiPolice",
         theme_color: "#ffffff",
@@ -52,6 +53,9 @@ export default defineConfig({
     }),
   ],
   server: {
-    allowedHosts: ["localhost", "3a15-103-163-66-220.ngrok-free.app"],
+    allowedHosts: ["localhost", "9288-103-163-66-220.ngrok-free.app"],
+  },
+  preview: {
+    allowedHosts: ["9288-103-163-66-220.ngrok-free.app"],
   },
 });
