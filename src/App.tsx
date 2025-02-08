@@ -15,7 +15,6 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/cases/:caseId" element={<CaseProfile />} />
           <Route path="/cases" element={<CaseManagementPage />} />
-          <Route path="/map" element={<Map />} />
         </Route>
         <Route path="map" element={<Maplayout />}>
           <Route index element={<Map />} />
