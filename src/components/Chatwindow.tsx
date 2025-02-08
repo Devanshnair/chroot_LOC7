@@ -1,4 +1,4 @@
-import { ArrowLeftCircleIcon, User } from "lucide-react";
+import { ArrowLeft, ArrowLeftCircleIcon, User } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Chat, Message } from "../layouts/Chatlayout";
@@ -94,16 +94,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div className="chat-window min-h-full">
-      <h2 className="flex gap-2 bg-indigo-50 text-lg font-semibold text-indigo-500 p-4">
+      <h2 className="flex gap-2 bg-indigo-50 text-lg font-semibold p-4">
         {window.innerWidth < 768 && (
           <button onClick={() => setView("chat-list")}>
-            <ArrowLeftCircleIcon className="size-5 mr-1" />
+            <ArrowLeft className="size-7 mr-1" />
           </button>
         )}
 
-        <span>
+        {/* <span>
           <User className="size-5=6" />
-        </span>
+        </span> */}
         {chat.name}
       </h2>
       <div className="messages h-full">

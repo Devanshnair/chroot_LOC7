@@ -87,7 +87,7 @@ const ReportNavbar = () => {
           <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
             <img src={UserImg} className="h-full w-full object-cover" />
           </button>
-          <h2 className="font-bold text-2xl">Digital Police Force </h2>
+          <h2 className="font-bold text-2xl">CopCo</h2>
         </div>
 
         <Link to={"/user/login"}>
@@ -128,7 +128,7 @@ const ReportNavbar = () => {
               <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
                 <img src={UserImg} className="h-full w-full object-cover" />
               </button>
-              <h2 className="font-bold text-xl">Digital Police </h2>
+              <h2 className="font-bold text-xl">Copco</h2>
             </div>
 
             <button
