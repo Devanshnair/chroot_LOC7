@@ -223,4 +223,4 @@ const ReportNavbar = () => {
   );
 };
 
-export default Navbar;
+export default ReportNavbar;

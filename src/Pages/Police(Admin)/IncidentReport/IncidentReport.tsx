@@ -10,7 +10,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import { Calendar, Clock, Filter, MapPin, Search } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { baseUrl } from "../../App";
+import { baseUrl } from "../../../App";
 
 const IncidentReport: React.FC = () => {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(

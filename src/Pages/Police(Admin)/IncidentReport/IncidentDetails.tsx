@@ -11,7 +11,7 @@ import {
   Phone,
 } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { baseUrl } from "../../App"; // Ensure this is correctly imported
+import { baseUrl } from "../../../App";
 
 interface ReportedBy {
   id: number;
