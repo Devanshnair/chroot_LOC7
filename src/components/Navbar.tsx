@@ -46,7 +46,7 @@ const Navbar = () => {
     { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
     { path: "/cases", label: "Case Management", icon: <FileText className="h-5 w-5" /> },
     { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
-    { path: "/publicuser/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
+    { path: "/user/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
   ];
 
   return (

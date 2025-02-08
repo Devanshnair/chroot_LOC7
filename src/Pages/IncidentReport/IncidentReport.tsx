@@ -10,6 +10,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import { Filter, Search } from "lucide-react";
 
+
 const cases = [
   {
     id: 1,
@@ -122,7 +123,7 @@ const cases = [
     colour: "green",
   },
   {
-    id: 10,
+    id: 11,
     location: [18.998, 72.8414],
     address: "Dadar, Mumbai",
     case_type: "Public Disturbance",
@@ -134,41 +135,27 @@ const cases = [
   },
 ];
 
-interface Case {
-  id: number;
-  location: [number, number];
-  address: string;
-  case_type: string;
-  no_of_cases: number;
-  title: string;
-  description: string;
-  radius: number;
-  colour: string;
-}
-
-const MapController: React.FC<{ center: [number, number] | null }> = ({
-  center,
-}) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (center) {
-      map.setView(center, 15);
-    }
-  }, [center, map]);
-
-  return null;
-};
-
-const Map: React.FC = () => {
+const IncidentReport: React.FC = () => {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
   );
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<Case[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<
     [number, number] | null
   >(null);
+
+  const MapController: React.FC<{ center: [number, number] | null }> = ({
+    center,
+  }) => {
+    const map = useMap();
+
+    useEffect(() => {
+      if (center) {
+        map.setView(center, 15);
+      }
+    }, [center, map]);
+
+    return null;
+  };
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -190,108 +177,60 @@ const Map: React.FC = () => {
     }
   }, []);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-
-    if (value.length > 0) {
-      const filtered = cases
-        .filter((item) =>
-          item.address.toLowerCase().includes(value.toLowerCase())
-        )
-        .slice(0, 5);
-      setSuggestions(filtered);
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  const handleSelectLocation = (location: Case) => {
-    setSelectedLocation(location.location);
-    setSearchTerm(location.address);
-    setSuggestions([]);
-  };
-
   return (
-    <div className="relative w-full h-screen">
-      <div className="absolute flex items-center top-4 left-4 z-[1000] ">
-        <div className="relative  w-72 max-w-xl mx-auto bg-white  rounded-full shadow-lg p-2">
-          <div className="flex items-center">
-            <Search className="ml-4" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              placeholder="Search places"
-              className="w-full p-2 pl-3.5  pr-4 border-none rounded-full text-sm text-gray-800 focus:outline-none  placeholder-gray-500"
-            />
-          </div>
+    <>
+      <div className="mapWrapper h-[40vh]">
+        <div style={{ height: "100%", width: "100%" }}>
+          {userLocation && (
+            <MapContainer
+              center={userLocation}
+              zoom={13}
+              scrollWheelZoom={true}
+              style={{ height: "100%", width: "100%" }}
+              zoomControl={false}
+            >
+              <MapController center={selectedLocation} />
 
-          {suggestions.length > 0 && (
-            <div className="absolute w-full bg-white mt-1 rounded-lg shadow-xl border border-gray-100 max-h-60 overflow-y-auto z-10">
-              {suggestions.map((item) => (
-                <div
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"
+              />
+
+              {cases.map((item) => (
+                <Circle
                   key={item.id}
-                  className="p-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150 first:rounded-t-md last:rounded-b-md"
-                  onClick={() => handleSelectLocation(item)}
+                  center={item.location}
+                  radius={item.radius}
+                  color="transparent"
+                  fillColor={item.colour}
+                  fillOpacity={0.5}
+                  weight={0}
                 >
-                  {item.address}
-                </div>
+                  <Popup>
+                    <div className="p-2">
+                      <h3 className="font-medium text-gray-900">
+                        Case Type: {item.case_type}
+                      </h3>
+                      <h3 className="font-medium text-gray-900">
+                        Number of cases: {item.no_of_cases}
+                      </h3>
+                      <h3 className="font-medium text-gray-900">
+                        Location: {item.address}
+                      </h3>
+                    </div>
+                  </Popup>
+                </Circle>
               ))}
-            </div>
+            </MapContainer>
           )}
-        </div>
-        <div className="filter">
-          <button className="bg-white ml-4 p-3 rounded-full ">
-            <Filter />
-          </button>
         </div>
       </div>
 
-      {userLocation && (
-        <MapContainer
-          center={userLocation}
-          zoom={13}
-          scrollWheelZoom={true}
-          className="h-full w-full"
-          zoomControl={false}
-        >
-          <MapController center={selectedLocation} />
-
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"
-          />
-
-          {cases.map((item) => (
-            <Circle
-              key={item.id}
-              center={item.location}
-              radius={item.radius}
-              color="transparent"
-              fillColor={item.colour}
-              fillOpacity={0.5}
-              weight={0}
-            >
-              <Popup>
-                <div className="p-2">
-                  <h3 className="font-medium text-gray-900">
-                    Case Type: {item.case_type}
-                  </h3>
-                  <h3 className="font-medium text-gray-900">
-                    Number of cases: {item.no_of_cases}
-                  </h3>
-                  <h3 className="font-medium text-gray-900">
-                    Location: {item.address}
-                  </h3>
-                </div>
-              </Popup>
-            </Circle>
-          ))}
-        </MapContainer>
-      )}
-    </div>
+      <div className="layout">
+        
+      </div>
+    </>
   );
 };
 
-export default Map;
+export default IncidentReport;
