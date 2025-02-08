@@ -28,11 +28,13 @@ const Navbar = () => {
     const handleClickOutside = (event: MouseEvent) => {
       const menu = document.getElementById("mobile-menu");
       const menuButton = document.getElementById("menu-button");
-      
-      if (menu && 
-          !menu.contains(event.target as Node) && 
-          menuButton && 
-          !menuButton.contains(event.target as Node)) {
+
+      if (
+        menu &&
+        !menu.contains(event.target as Node) &&
+        menuButton &&
+        !menuButton.contains(event.target as Node)
+      ) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -44,12 +46,12 @@ const Navbar = () => {
   // Prevent scroll when menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
 
@@ -83,7 +85,7 @@ const Navbar = () => {
         >
           <Menu className="h-6 w-6" />
         </button>
-        
+
         <div className="flex justify-center items-center gap-5">
           <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
             <img src={UserImg} className="h-full w-full object-cover" />
@@ -131,7 +133,7 @@ const Navbar = () => {
 
       {/* Overlay */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 transition-opacity md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />

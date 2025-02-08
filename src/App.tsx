@@ -8,6 +8,7 @@ import Maplayout from "./layouts/Maplayout";
 import CaseProfile from "./Pages/Police(Admin)/CaseProfile/CaseProfile";
 import UserLogin from "./Pages/Auth/UserLogin";
 import CreateCase from "./Pages/CreateCase/CreateCase";
+import Chatlayout from "./layouts/Chatlayout";
 import IncidentReport from "./Pages/IncidentReport/IncidentReport";
 import UserRegister from "./Pages/Auth/UserRegister";
 import UserProfile from "./Pages/Public(User)/UserProfile";
@@ -32,15 +33,20 @@ function App() {
           <Route path="/cases/:caseId" element={<CaseProfile />} />
 
           <Route path="/map" element={<Map />} />
+
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/incident/report" element={<IncidentReport />} />
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user/report" element={<ReportIncidents />} />
-          <Route path="/user/emergencycontacts" element={<EmergencyContacts />} />
-          <Route path="/user/sos" element={<SOS/>} />
+          <Route
+            path="/user/emergencycontacts"
+            element={<EmergencyContacts />}
+          />
+          <Route path="/user/sos" element={<SOS />} />
           <Route path="/user/blogs" element={<SafetyTips />} />
 
+          <Route path="/chat" element={<Chatlayout />} />
         </Route>
         <Route path="map" element={<Maplayout />}>
           <Route index element={<Map />} />
