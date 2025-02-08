@@ -1,66 +1,83 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import ChatList from "../components/Chatlist";
 import ChatWindow from "../components/Chatwindow";
+import { useQuery } from "@tanstack/react-query";
+import { baseUrl } from "../App";
+import { Loader2 } from "lucide-react";
 
-interface Message {
+export interface Message {
   id: number;
   senderId: number;
   text: string;
-  timestamp: Date;
+  timestamp: string;
 }
 
-interface Chat {
-  id: number;
+export interface Chat {
+  userId: number;
   name: string;
   messages: Message[];
 }
 
 export default function Chatlayout() {
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [selectedChat, setSelectedChat] = useState<number>(1);
+  const { data: chatsData, isLoading } = useQuery<Chat[]>({
+    queryKey: ["chats"],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/api/chats/dms/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "69420",
+        },
+      });
+      return response.json();
+    },
+  });
+  const [chats, setChats] = useState<Chat[] | null>(null);
+
+  const { data: currentUser } = useQuery({
+    queryKey: ["currentUserId"],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/api/me/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "69420",
+        },
+      });
+      return response.json();
+    },
+  });
+
+  const [selectedChat, setSelectedChat] = useState<number>();
 
   useEffect(() => {
-    // Mock API call to get initial chats
-    const initialChats: Chat[] = [
-      { id: 1, name: "Alice", messages: [] },
-      { id: 2, name: "Bob", messages: [] },
-      { id: 3, name: "Charlie", messages: [] },
-    ];
-    setChats(initialChats);
-  }, []);
+    if (chatsData) setChats(chatsData);
+  }, [chatsData]);
 
-  // const sendMessage = (text: string) => {
-  //   if (selectedChat === null) return;
-
-  //   const newMessage: Message = {
-  //     id: Date.now(),
-  //     senderId: 0, // Assuming 0 is the current user
-  //     text,
-  //     timestamp: new Date(),
-  //   };
-
-  //   setChats((prevChats) =>
-  //     prevChats.map((chat) =>
-  //       chat.id === selectedChat
-  //         ? { ...chat, messages: [...chat.messages, newMessage] }
-  //         : chat
-  //     )
-  //   );
-
-  //   // Mock API call to send message
-  //   console.log(`Sending message to chat ${selectedChat}: ${text}`);
-  // };
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+      </div>
+    );
 
   return (
     <div className="chat-app">
-      <ChatList
-        chats={chats}
-        selectedChat={selectedChat}
-        onSelectChat={setSelectedChat}
-      />
-      {chats.length > 0 && (
-        <ChatWindow chat={chats.find((chat) => chat.id === selectedChat)!} />
+      {chats && (
+        <ChatList
+          chats={chats || []}
+          selectedChat={selectedChat || chats[0].userId}
+          onSelectChat={setSelectedChat}
+        />
+      )}
+
+      {chats && currentUser && (
+        <ChatWindow
+          chat={chats.find((chat) => chat.userId === selectedChat) || chats[0]}
+          currentUserId={currentUser.id}
+          setChats={setChats}
+        />
       )}
     </div>
   );

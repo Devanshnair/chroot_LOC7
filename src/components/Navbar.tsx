@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Home, FileText, Map, User, User2 } from "lucide-react";
+import {
+  Menu,
+  X,
+  Home,
+  FileText,
+  Map,
+  User,
+  User2,
+  ChartBar,
+  MessageCircle,
+} from "lucide-react";
 import UserImg from "../assets/user.png";
 
 interface NavLink {
@@ -52,6 +62,11 @@ const Navbar = () => {
       icon: <FileText className="h-5 w-5" />,
     },
     { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
+    {
+      path: "/chats",
+      label: "Chats",
+      icon: <MessageCircle className="h-5 w-5" />,
+    },
     {
       path: "/user/profile",
       label: "Profile",
