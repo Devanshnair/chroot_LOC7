@@ -247,19 +247,16 @@ export default function CaseManagement() {
               </div>
             )
           )}
-          {filteredCases.length === 0 &&
-            searchQuery && ( // Display "No cases found" message when search active
-              <p className="text-gray-500 text-center">
-                No cases found matching your search.
-              </p>
-            )}
-          {cases.length > 0 &&
-            filteredCases.length === 0 &&
-            !searchQuery && ( // Display "No previous cases" initially if no dummy data/no search
-              <p className="text-gray-500 text-center">
-                No previous cases recorded yet.
-              </p>
-            )}
+          {filteredCases.length === 0 && searchQuery && (
+            <p className="text-gray-500 text-center">
+              No cases found matching your search.
+            </p>
+          )}
+          {cases.length > 0 && filteredCases.length === 0 && !searchQuery && (
+            <p className="text-gray-500 text-center">
+              No previous cases recorded yet.
+            </p>
+          )}
         </div>
       </div>
     </div>
