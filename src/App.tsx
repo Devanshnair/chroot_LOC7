@@ -7,6 +7,7 @@ import Map from "./Pages/Map/Map";
 import Maplayout from "./layouts/Maplayout";
 import CaseProfile from "./Pages/CaseProfile/CaseProfile";
 import UserLogin from "./Pages/Auth/UserLogin";
+import CreateCase from "./Pages/CreateCase/CreateCase";
 
 export const baseUrl = "http://localhost:5173/";
 
