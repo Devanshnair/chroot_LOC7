@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   AlertCircle,
   MessageCircle,
+  Siren,
 } from "lucide-react";
 import UserImg from "../assets/user.png";
 
@@ -51,6 +52,11 @@ const navLinks: NavLink[] = [
     path: "/user/emergencycontacts",
     label: "Emergency Contacts",
     icon: <AlertCircle className="h-5 w-5" />,
+  },
+  {
+    path: "/incident/report/",
+    label: "Reported Incident",
+    icon: <Siren className="h-5 w-5" />,
   },
 ];
 
