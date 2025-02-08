@@ -130,7 +130,7 @@ const Navbar = () => {
           <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
             <img src={UserImg} className="h-full w-full object-cover" />
           </button>
-          <h2 className="font-bold text-2xl">Digital Police Force </h2>
+          <h2 className="font-bold text-2xl">Copco</h2>
         </div>
 
         {/* Desktop Navigation */}
