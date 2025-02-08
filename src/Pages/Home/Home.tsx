@@ -82,7 +82,7 @@ function HomePage() {
           <h2 className="text-3xl font-semibold text-gray-800 mb-10 text-center">
             Key Areas of Cultural Transformation
           </h2>
-          <div className="flex flex-wrap [&*>]:w-1/2 gap-8 md:gap-10 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
             {focusAreas.map((area, index) => (
               <div
                 key={index}
