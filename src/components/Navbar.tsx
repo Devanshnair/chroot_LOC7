@@ -1,7 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Home, FileText, Map, User, User2, User2Icon, LogOut, LucideLogOut, LogOutIcon, AlertTriangle, AlertCircle, Siren } from "lucide-react";
-import UserImg from "../assets/user.png"
+import {
+  Menu,
+  X,
+  Home,
+  FileText,
+  Map,
+  User,
+  User2,
+  User2Icon,
+  LogOut,
+  LucideLogOut,
+  LogOutIcon,
+  AlertTriangle,
+  AlertCircle,
+  MessageCircle,
+} from "lucide-react";
+import UserImg from "../assets/user.png";
 
 interface NavLink {
   path: string;
@@ -18,6 +33,11 @@ const navLinks: NavLink[] = [
   },
   { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
   {
+    path: "/chats",
+    label: "Chats",
+    icon: <MessageCircle className="h-5 w-5" />,
+  },
+  {
     path: "/user/profile",
     label: "Profile",
     icon: <User className="h-5 w-5" />,
@@ -32,16 +52,13 @@ const navLinks: NavLink[] = [
     label: "Emergency Contacts",
     icon: <AlertCircle className="h-5 w-5" />,
   },
-  {
-    path: "/incident/report/",
-    label: "Reported Incident",
-    icon: <Siren className="h-5 w-5" />,
-  },
 ];
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(localStorage.getItem("accessToken") ? true : false)
+  const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(
+    localStorage.getItem("accessToken") ? true : false
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -78,9 +95,9 @@ const Navbar = () => {
     const handleStorageChange = () => {
       setIsLoggedIn(!!localStorage.getItem("accessToken"));
     };
-  
+
     window.addEventListener("storage", handleStorageChange);
-    
+
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
@@ -126,28 +143,32 @@ const Navbar = () => {
         </div>
 
         {!isLoggedIn ? (
-          <Link to={'/user/login'}>
+          <Link to={"/user/login"}>
             <button className="bg-indigo-500 text-white font-medium text-xl px-4 py-2 rounded-lg cursor-pointer">
               Login
             </button>
           </Link>
         ) : (
           <div className="relative">
-            <button 
+            <button
               className="h-10 w-10 p-1 rounded-full bg-slate-300 ml-4 relative cursor-pointer"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <User2Icon className="h-full w-full" color="white"/>
+              <User2Icon className="h-full w-full" color="white" />
             </button>
             {isDropdownOpen && (
               <div className="flex justify-center items-center gap-2 bg-slate-300 absolute -bottom-9 right-0 p-1 rounded-sm cursor-pointer">
-                <LogOutIcon color="white" onClick={() => setIsDropdownOpen(false)}/>
-                <p className="text-lg text-white" onClick={handleLogout}>Logout</p>
+                <LogOutIcon
+                  color="white"
+                  onClick={() => setIsDropdownOpen(false)}
+                />
+                <p className="text-lg text-white" onClick={handleLogout}>
+                  Logout
+                </p>
               </div>
             )}
           </div>
         )}
-
       </div>
 
       {isMobileMenuOpen && (
