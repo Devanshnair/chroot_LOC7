@@ -46,6 +46,7 @@ const Navbar = () => {
     { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
     { path: "/cases", label: "Case Management", icon: <FileText className="h-5 w-5" /> },
     { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
+    { path: "/publicuser/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
   ];
 
   return (
@@ -68,6 +69,12 @@ const Navbar = () => {
           </button>
           <h2 className="font-bold text-2xl">Digital Police Force </h2>
         </div>
+
+        <Link to={'/login'}>
+        <button className="bg-indigo-500 text-white font-medium text-xl px-4 py-2 rounded-lg">
+          Login
+        </button>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center ml-auto space-x-6">
