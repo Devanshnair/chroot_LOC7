@@ -7,17 +7,15 @@ import {
   FileText,
   Map,
   User,
-  User2,
-  User2Icon,
-  LogOut,
-  LucideLogOut,
-  LogOutIcon,
-  AlertTriangle,
-  AlertCircle,
-  MessageCircle,
   Siren,
+  AlertTriangle,
+  MessageCircle,
+  FlagTriangleRight,
+  Phone,
+  ShieldCheck,
 } from "lucide-react";
 import UserImg from "../assets/user.png";
+import { jwtDecode } from "jwt-decode";
 
 interface NavLink {
   path: string;
@@ -25,19 +23,29 @@ interface NavLink {
   icon: React.ReactNode;
 }
 
-const navLinks: NavLink[] = [
+const decoded = jwtDecode(localStorage.getItem("accessToken") || "");
+
+const commonNavLinks: NavLink[] = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-  {
-    path: "/cases",
-    label: "Case Management",
-    icon: <FileText className="h-5 w-5" />,
-  },
   { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
+];
+
+const officerNavLinks: NavLink[] = [
+  { path: "/cases", label: "Cases", icon: <FileText className="h-5 w-5" /> },
   {
     path: "/chats",
     label: "Chats",
     icon: <MessageCircle className="h-5 w-5" />,
   },
+  {
+    path: "/incident/report",
+    label: "Reports",
+    icon: <Siren className="h-5 w-5" />,
+  },
+];
+
+const userNavLinks: NavLink[] = [
+  { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
   {
     path: "/user/profile",
     label: "Profile",
@@ -49,23 +57,29 @@ const navLinks: NavLink[] = [
     icon: <AlertTriangle className="h-5 w-5" />,
   },
   {
+    path: "/user/report",
+    label: "Report an Incident",
+    icon: <FlagTriangleRight className="h-5 w-5" />,
+  },
+  { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
+  {
     path: "/user/emergencycontacts",
     label: "Emergency Contacts",
-    icon: <AlertCircle className="h-5 w-5" />,
+    icon: <Phone className="h-5 w-5" />,
   },
   {
-    path: "/incident/report/",
-    label: "Reported Incident",
-    icon: <Siren className="h-5 w-5" />,
+    path: "/user/blogs",
+    label: "Safety Tips",
+    icon: <ShieldCheck className="h-5 w-5" />,
   },
 ];
 
-const Navbar = () => {
+const navLinks = decoded.is_officer
+  ? [...commonNavLinks, ...officerNavLinks]
+  : userNavLinks;
+
+const ReportNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(
-    localStorage.getItem("accessToken") ? true : false
-  );
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -97,26 +111,9 @@ const Navbar = () => {
     };
   }, [isMobileMenuOpen]);
 
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIsLoggedIn(!!localStorage.getItem("accessToken"));
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    setIsLoggedIn(false);
-    setIsDropdownOpen(false);
-  };
-
   return (
-    <nav className="bg-white shadow-md fixed top-0 w-full z-50">
-      <div className="px-6 py-5 flex justify-between items-center">
-        {/* Mobile menu button */}
+    <nav className="bg-white fixed top-0 shadow-md  w-full z-50 isolate">
+      <div className="container mx-auto px-6 py-5 flex items-center">
         <button
           id="menu-button"
           type="button"
@@ -131,7 +128,7 @@ const Navbar = () => {
           <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
             <img src={UserImg} className="h-full w-full object-cover" />
           </button>
-          <h2 className="font-bold text-2xl">Digital Police Force </h2>
+          <h2 className="font-bold text-2xl">CopCo</h2>
         </div>
 
         {/* Desktop Navigation */}
@@ -178,7 +175,7 @@ const Navbar = () => {
 
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 transition-opacity md:hidden"
+          className="fixed inset-0  bg-black/50 transition-opacity md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -195,7 +192,7 @@ const Navbar = () => {
               <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
                 <img src={UserImg} className="h-full w-full object-cover" />
               </button>
-              <h2 className="font-bold text-xl">Digital Police </h2>
+              <h2 className="font-bold text-xl">Copco</h2>
             </div>
 
             <button
