@@ -9,9 +9,6 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      devOptions: {
-        enabled: true,
-      },
       registerType: "autoUpdate",
       strategies: "injectManifest",
       srcDir: "src",
