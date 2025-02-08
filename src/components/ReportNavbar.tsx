@@ -78,7 +78,7 @@ const ReportNavbar = () => {
   ];
 
   return (
-    <nav className="bg-white fixed top-0 shadow-md  w-full z-50">
+    <nav className="bg-white fixed top-0 shadow-md  w-full z-50 isolate">
       <div className="container mx-auto px-6 py-5 flex items-center">
         <button
           id="menu-button"
@@ -118,7 +118,7 @@ const ReportNavbar = () => {
 
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 transition-opacity md:hidden"
+          className="fixed inset-0  bg-black/50 transition-opacity md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
