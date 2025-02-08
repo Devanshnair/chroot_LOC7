@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Home, FileText, Map, User, User2, Siren, AlertCircle, AlertTriangle, MessageCircle, FlagTriangleRight, Phone, ShieldCheck } from "lucide-react";
+import {
+  Menu,
+  X,
+  Home,
+  FileText,
+  Map,
+  User,
+  Siren,
+  AlertTriangle,
+  MessageCircle,
+  FlagTriangleRight,
+  Phone,
+  ShieldCheck,
+} from "lucide-react";
 import UserImg from "../assets/user.png";
 import { jwtDecode } from "jwt-decode";
 
@@ -10,8 +23,7 @@ interface NavLink {
   icon: React.ReactNode;
 }
 
-
-const decoded = jwtDecode(localStorage.getItem('accessToken') || '');
+const decoded = jwtDecode(localStorage.getItem("accessToken") || "");
 
 const commonNavLinks: NavLink[] = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
@@ -20,22 +32,51 @@ const commonNavLinks: NavLink[] = [
 
 const officerNavLinks: NavLink[] = [
   { path: "/cases", label: "Cases", icon: <FileText className="h-5 w-5" /> },
-  { path: "/chats", label: "Chats", icon: <MessageCircle className="h-5 w-5" /> },
-  { path: "/incident/report", label: "Reports", icon: <Siren className="h-5 w-5" /> }
+  {
+    path: "/chats",
+    label: "Chats",
+    icon: <MessageCircle className="h-5 w-5" />,
+  },
+  {
+    path: "/incident/report",
+    label: "Reports",
+    icon: <Siren className="h-5 w-5" />,
+  },
 ];
 
 const userNavLinks: NavLink[] = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-  { path: "/user/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
-  { path: "/user/sos", label: "SOS", icon: <AlertTriangle className="h-5 w-5" /> },
-  { path: "/user/report", label: "Report an Incident", icon: <FlagTriangleRight className="h-5 w-5" /> },
+  {
+    path: "/user/profile",
+    label: "Profile",
+    icon: <User className="h-5 w-5" />,
+  },
+  {
+    path: "/user/sos",
+    label: "SOS",
+    icon: <AlertTriangle className="h-5 w-5" />,
+  },
+  {
+    path: "/user/report",
+    label: "Report an Incident",
+    icon: <FlagTriangleRight className="h-5 w-5" />,
+  },
   { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
-  { path: "/user/emergencycontacts", label: "Emergency Contacts", icon: <Phone className="h-5 w-5" /> },
-  { path: "/user/blogs", label: "Safety Tips", icon: <ShieldCheck className="h-5 w-5" /> },
+  {
+    path: "/user/emergencycontacts",
+    label: "Emergency Contacts",
+    icon: <Phone className="h-5 w-5" />,
+  },
+  {
+    path: "/user/blogs",
+    label: "Safety Tips",
+    icon: <ShieldCheck className="h-5 w-5" />,
+  },
 ];
 
-const navLinks = decoded.is_officer ? [...commonNavLinks, ...officerNavLinks] : userNavLinks;
-
+const navLinks = decoded.is_officer
+  ? [...commonNavLinks, ...officerNavLinks]
+  : userNavLinks;
 
 const ReportNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

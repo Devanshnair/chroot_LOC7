@@ -10,7 +10,6 @@ import {
   User2Icon,
   LogOutIcon,
   AlertTriangle,
-  AlertCircle,
   MessageCircle,
   Siren,
   FlagTriangleRight,
@@ -86,14 +85,12 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     localStorage.getItem("accessToken") ? true : false
   );
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const menu = document.getElementById("mobile-menu");
       const menuButton = document.getElementById("menu-button");
-      const dropdown = document.getElementById("desktop-dropdown");
-      const dropdownButton = document.getElementById("dropdown-button");
 
       if (
         menu &&
@@ -102,15 +99,6 @@ const Navbar = () => {
         !menuButton.contains(event.target as Node)
       ) {
         setIsMobileMenuOpen(false);
-      }
-
-      if (
-        dropdown &&
-        !dropdown.contains(event.target as Node) &&
-        dropdownButton &&
-        !dropdownButton.contains(event.target as Node)
-      ) {
-        setIsDropdownOpen(false);
       }
     };
 
@@ -142,12 +130,12 @@ const Navbar = () => {
   // Logout function
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsLoggedIn(false);
+    setIsLoggedIn(false); // Ensure immediate UI update
     setIsDropdownOpen(false);
   };
 
   return (
-    <nav className="bg-white shadow-md relative z-50 ">
+    <nav className="bg-white shadow-md relative z-50">
       <div className="max-w-[1450px] mx-auto">
         <div className="px-6 py-5 flex justify-between items-center">
           {/* Mobile menu button */}
@@ -162,19 +150,15 @@ const Navbar = () => {
           </button>
 
           <div className="flex justify-center items-center gap-2">
-            <button className="flex justify-center items-center w-7 h-7 overflow-hidden">
-              <img
-                src={UserImg}
-                className="h-full w-full object-cover"
-                alt="User Profile"
-              />
+            <button className="flex justify-center items-center w-7 h-7  overflow-hidden">
+              <img src={UserImg} className="h-full w-full object-cover" />
             </button>
             <h2 className="font-bold text-2xl">Copco</h2>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex justify-center items-center gap-4">
-            {coreNavLinks.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -183,24 +167,25 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
+          </div>
 
-            {/* "More" Dropdown */}
-            <div className="relative" id="dropdown-button">
+          {!isLoggedIn ? (
+            <Link to={"/user/login"}>
+              <button className="text-indigo-600 hover:text-indigo-700 font-medium px-4 py-2 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Log In
+              </button>
+            </Link>
+          ) : (
+            <div className="relative">
               <button
+                className="ml-4 flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="text-gray-800 hover:text-indigo-600 transition duration-150 flex items-center gap-1 focus:outline-none"
-                aria-label="More Navigation Links"
+                aria-label="User menu"
               >
-                More
-                <ChevronDown
-                  className={`h-4 w-4 transition-transform ${
-                    isDropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
+                <User2Icon className="h-5 w-5 text-gray-700" />
               </button>
               {isDropdownOpen && (
                 <div
-                  id="desktop-dropdown"
                   className="absolute right-0 mt-2 w-48 rounded-md shadow-xl bg-white border border-gray-200 focus:outline-none"
                   tabIndex={0}
                   onBlur={() => setIsDropdownOpen(false)}
@@ -209,48 +194,17 @@ const Navbar = () => {
                     className="py-1"
                     role="menu"
                     aria-orientation="vertical"
-                    aria-labelledby="options-menu-button"
+                    aria-labelledby="user-menu-button"
                   >
-                    {moreNavLinks.map((link) => (
-                      <Link
-                        key={link.path}
-                        to={link.path}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
-                        role="menuitem"
-                        onClick={() => setIsDropdownOpen(false)}
-                      >
-                        <div className="flex items-center gap-2">
-                          {link.icon}
-                          {link.label}
-                        </div>
-                      </Link>
-                    ))}
+                    <button
+                      onClick={handleLogout}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-indigo-600 w-full text-left"
+                      role="menuitem"
+                    >
+                      <LogOutIcon className="h-4 w-4 mr-2 inline-block align-middle" />
+                      Logout
+                    </button>
                   </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {!isLoggedIn ? (
-            <Link to={"/user/login"}>
-              <button className="bg-indigo-500 text-white font-medium text-xl px-4 py-2 rounded-lg cursor-pointer">
-                Login
-              </button>
-            </Link>
-          ) : (
-            <div className="relative">
-              <button
-                className="h-10 w-10 p-1 rounded-full bg-slate-300 ml-4 relative cursor-pointer"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Consider separate dropdown for user profile if needed
-              >
-                <User2Icon className="h-full w-full" color="white" />
-              </button>
-              {isDropdownOpen && (
-                <div className="flex justify-center items-center gap-2 bg-slate-300 absolute -bottom-9 right-0 p-1 rounded-sm cursor-pointer">
-                  <LogOutIcon color="white" onClick={handleLogout} />
-                  <p className="text-lg text-white" onClick={handleLogout}>
-                    Logout
-                  </p>
                 </div>
               )}
             </div>
@@ -289,8 +243,7 @@ const Navbar = () => {
             </div>
 
             <nav className="space-y-2">
-              {/* Core Nav Links for Mobile */}
-              {coreNavLinks.map((link) => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -301,40 +254,6 @@ const Navbar = () => {
                   <span className="text-lg font-medium">{link.label}</span>
                 </Link>
               ))}
-              {/* "More" Dropdown Links in Mobile */}
-              <div>
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center w-full space-x-3 px-4 py-3 text-gray-800 hover:bg-gray-50 hover:text-indigo-600 rounded-lg transition duration-150 focus:outline-none"
-                  aria-label="toggle more menu"
-                >
-                  <Menu className="h-5 w-5" />{" "}
-                  {/* Using Menu icon for "More" in mobile */}
-                  <span className="text-lg font-medium">More</span>
-                  <ChevronDown
-                    className={`h-4 w-4 ml-auto transition-transform ${
-                      isDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {isDropdownOpen && (
-                  <div className="ml-6 mt-1 space-y-2">
-                    {moreNavLinks.map((link) => (
-                      <Link
-                        key={link.path}
-                        to={link.path}
-                        className="flex items-center space-x-3 px-4 py-3 text-gray-800 hover:bg-gray-50 hover:text-indigo-600 rounded-lg transition duration-150"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {link.icon}
-                        <span className="text-lg font-medium">
-                          {link.label}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
             </nav>
           </div>
         </div>
