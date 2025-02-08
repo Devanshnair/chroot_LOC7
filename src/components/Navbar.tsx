@@ -11,7 +11,7 @@ function Navbar() {
 
   return (
     <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
+      <div className="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center ">
         <div className="flex items-center justify-between">
           <Link
             to="/"
@@ -62,6 +62,10 @@ function Navbar() {
             >
               Map
             </Link>
+            <Link
+              to="/chat"
+              className="block px-4 py-2 text-sm text-gray-800 hover:text-indigo-600 mt-2 md:mt-0 md:ml-2"
+            ></Link>
             <Link
               to="/login"
               className="block px-4 py-2 text-sm text-gray-800 hover:text-indigo-600 mt-2 md:mt-0 md:ml-2"

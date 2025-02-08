@@ -8,6 +8,7 @@ import Maplayout from "./layouts/Maplayout";
 import CaseProfile from "./Pages/CaseProfile/CaseProfile";
 import UserLogin from "./Pages/Auth/UserLogin";
 import CreateCase from "./Pages/CreateCase/CreateCase";
+import Chatlayout from "./layouts/Chatlayout";
 
 export const baseUrl = "http://localhost:5173/";
 
@@ -25,7 +26,9 @@ function App() {
           <Route path="/cases/:caseId" element={<CaseProfile />} />
 
           <Route path="/map" element={<Map />} />
+
           <Route path="/login" element={<UserLogin />} />
+          <Route path="/chat" element={<Chatlayout />} />
         </Route>
         <Route path="map" element={<Maplayout />}>
           <Route index element={<Map />} />
