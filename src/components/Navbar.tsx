@@ -53,7 +53,7 @@ const navLinks = decoded.is_officer ? [...commonNavLinks, ...officerNavLinks] : 
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     localStorage.getItem("accessToken") ? true : false
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -127,7 +127,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex justify-center items-center space-x-6">
+        <div className="hidden md:flex justify-center items-center gap-4">
           {navLinks.map((link) => (
             <Link
               key={link.path}
