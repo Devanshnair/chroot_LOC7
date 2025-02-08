@@ -181,12 +181,12 @@ const Map: React.FC = () => {
         },
         (error) => {
           console.error("Error getting location:", error.message);
-          setUserLocation([19.076, 72.8777]); 
+          setUserLocation([19.076, 72.8777]);
         }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
-      setUserLocation([19.076, 72.8777]); 
+      setUserLocation([19.076, 72.8777]);
     }
   }, []);
 
@@ -199,7 +199,7 @@ const Map: React.FC = () => {
         .filter((item) =>
           item.address.toLowerCase().includes(value.toLowerCase())
         )
-        .slice(0, 5); 
+        .slice(0, 5);
       setSuggestions(filtered);
     } else {
       setSuggestions([]);
