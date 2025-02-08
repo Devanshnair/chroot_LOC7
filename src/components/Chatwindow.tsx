@@ -1,34 +1,28 @@
 import { User } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
-
-interface Message {
-  id: number;
-  senderId: number;
-  text: string;
-  timestamp: Date;
-}
-
-interface Chat {
-  id: number;
-  name: string;
-  messages: Message[];
-}
+import { useEffect, useRef, useState } from "react";
+import { Chat, Message } from "../layouts/Chatlayout";
 
 interface ChatWindowProps {
   chat: Chat;
+  currentUserId: number;
+  setChats: React.Dispatch<React.SetStateAction<Chat[] | null>>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ chat }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState("");
+const ChatWindow: React.FC<ChatWindowProps> = ({
+  chat,
+  currentUserId,
+  setChats,
+}) => {
+  console.log(currentUserId);
+  // const [messages, setMessages] = useState<Message[]>([]);
+  const [newText, setNewText] = useState("");
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
     const ws = new WebSocket(
-      `ws://natural-ape-severely.ngrok-free.app/ws/teams/${
-        chat.id
-      }/?token=${localStorage.getItem("accessToken")}`
+      // prettier-ignore
+      `ws://natural-ape-severely.ngrok-free.app/ws/dm/${chat.userId}/${currentUserId}/?token=${localStorage.getItem("accessToken")}`
     );
 
     ws.onopen = () => {
@@ -37,12 +31,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat }) => {
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      if (message.history) {
-        setMessages(message.history);
-        return;
-      }
-      // console.log(message);
-      setMessages((prev) => [...prev, message]);
+      setChats((prevChats) => {
+        if (!prevChats) return null;
+        return prevChats.map((c) => {
+          if (c.userId === chat.userId) {
+            return {
+              ...c,
+              messages: [...c.messages, message],
+            };
+          }
+          return c;
+        });
+      });
     };
 
     ws.onclose = () => {
@@ -58,28 +58,43 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat }) => {
     return () => {
       ws.close();
     };
-  }, [chat.id]);
+  }, [chat.userId]);
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim() || !socket) return;
+    if (!newText.trim() || !socket) return;
 
-    const messageData = {
-      message: newMessage,
+    const newMessage: Message = {
+      id: chat.messages.length + 1,
+      senderId: currentUserId,
+      text: newText,
       timestamp: new Date().toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "2-digit",
       }),
     };
-
-    socket.send(JSON.stringify(messageData));
-    setNewMessage("");
+    console.log(newMessage);
+    socket.send(JSON.stringify(newMessage));
+    setNewText("");
+    scrollToBottom();
   };
+
+  const messagesEndRef = useRef<HTMLDivElement>(null); // Ref for the end of messages
+
+  // Function to scroll to the bottom of the messages container
+  function scrollToBottom() {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); // Smooth scroll is optional, can be 'auto' or 'instant'
+  }
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat.messages]);
+
   return (
     <div className="chat-window min-h-full">
-      <h2 className="flex gap-2 bg-[#f2fcea]">
+      <h2 className="flex gap-2 bg-green-50">
         <span>
-          <User />
+          <User className="size-5" />
         </span>
         {chat.name}
       </h2>
@@ -88,60 +103,49 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat }) => {
           <div
             key={message.id}
             className={`message ${
-              message.senderId === 0 ? "sent" : "received"
+              message.senderId === currentUserId ? "sent" : "received"
             }`}
           >
             <p>{message.text}</p>
             <span className="timestamp">
-              {message.timestamp.toLocaleTimeString()}
+              {formatTimestamp(message.timestamp)}
             </span>
           </div>
         ))}
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`message ${
-              message.senderId === 0 ? "sent" : "received"
-            }`}
-          >
-            <p>{message.text}</p>
-            <span className="timestamp">
-              {message.timestamp.toLocaleTimeString()}
-            </span>
-          </div>
-        ))}
+
+        <div ref={messagesEndRef} />
       </div>
-      <MessageInput onSendMessage={sendMessage} />
+      <form className="message-input" onSubmit={sendMessage}>
+        <input
+          type="text"
+          value={newText}
+          onChange={(e) => setNewText(e.target.value)}
+          placeholder="Type a message..."
+          className="border rounded-sm p-2 w-full text-gray-700 outline-offset-4"
+        />
+        <button type="submit" className="rounded-sm">
+          Send
+        </button>
+      </form>
     </div>
   );
 };
 
 export default ChatWindow;
 
-interface MessageInputProps {
-  onSendMessage: (e: React.FormEvent) => void;
-}
+function formatTimestamp(timestamp: string) {
+  const date = new Date(timestamp);
+  // Format the date and time using toLocale... methods
+  const formattedDate = date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  const formattedTime = date.toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 
-function MessageInput({ onSendMessage }: MessageInputProps) {
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (message.trim()) {
-      onSendMessage(e);
-      setMessage("");
-    }
-  };
-
-  return (
-    <form className="message-input" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type a message..."
-      />
-      <button type="submit">Send</button>
-    </form>
-  );
+  return `${formattedDate}, ${formattedTime}`;
 }

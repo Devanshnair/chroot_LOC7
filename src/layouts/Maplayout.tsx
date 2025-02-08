@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 const Maplayout = () => {
   return (
     <>
-      
+      <Navbar/>
       <main>
         <Outlet />
       </main>
