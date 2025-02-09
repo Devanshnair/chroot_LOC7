@@ -15,6 +15,7 @@ import {
   FlagTriangleRight,
   ShieldCheck,
   Phone,
+  ChartNetwork,
 } from "lucide-react";
 import UserImg from "../assets/user.png";
 import { jwtDecode } from "jwt-decode";
@@ -31,6 +32,7 @@ const commonNavLinks: NavLink[] = [
 ];
 
 const officerNavLinks: NavLink[] = [
+  { path: "/policeprofile", label: "Profile", icon: <User className="h-5 w-5" /> },
   { path: "/cases", label: "Cases", icon: <FileText className="h-5 w-5" /> },
   {
     path: "/chats",
@@ -41,6 +43,11 @@ const officerNavLinks: NavLink[] = [
     path: "/incident/report",
     label: "Reports",
     icon: <Siren className="h-5 w-5" />,
+  },
+  {
+    path: "/performance",
+    label: "Performance",
+    icon: <ChartNetwork className="h-5 w-5" />,
   },
 ];
 
