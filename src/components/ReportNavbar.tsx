@@ -156,7 +156,7 @@ const ReportNavbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 z-50">
+    <nav className="bg-white shadow-md fixed w-full top-0 z-50">
       <div className="max-w-[1450px] mx-auto">
         <div className="px-6 py-5 flex justify-between items-center">
           {/* Mobile menu button */}
