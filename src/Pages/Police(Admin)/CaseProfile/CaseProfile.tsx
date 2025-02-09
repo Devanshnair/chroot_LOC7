@@ -9,6 +9,7 @@ import {
   Folder,
 } from "lucide-react";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 // Mock Data (unchanged)
 const caseData = {
@@ -22,7 +23,7 @@ const caseData = {
     "Breaking and entering reported at local jewelry store. Multiple items stolen including precious gems and gold jewelry. Security system was disabled prior to entry.",
   estimated_loss: "₹25,00,000",
   accused: {
-    name: "John Doe",
+    name: "Govind Singh",
     age: 35,
     address: "123 Main St, Mumbai",
     status: "At Large",
@@ -358,6 +359,7 @@ const Timeline = ({ events }) => {
 export default function CaseProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [activeTab, setActiveTab] = useState("files");
+  const navigate = useNavigate();
 
   return (
     <div className="container mx-auto p-4 space-y-4">
@@ -378,14 +380,14 @@ export default function CaseProfile() {
               <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
                 {caseData.incident_type}
               </span>
-              <span className="px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full">
+              {/* <span className="px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full">
                 Estimated Loss: {caseData.estimated_loss}
-              </span>
+              </span> */}
             </div>
           </div>
 
           {/* Divider */}
-          <div className="border-b my-4" />
+          <div className="border-b my-4 border-gray-100" />
 
           {/* Case Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -456,10 +458,15 @@ export default function CaseProfile() {
           </div>
         </div>
       </div>
-
+      <button
+        className="rounded bg-indigo-500 text-white p-2 px-3"
+        onClick={() => navigate("/sca")}
+      >
+        Smart Analysis
+      </button>
       {/* Tabs */}
       <div>
-        <div className="border-b">
+        <div className="border-b border-gray-300">
           <button
             className={`px-4 py-2 ${
               activeTab === "files"
