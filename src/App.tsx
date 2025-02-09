@@ -22,6 +22,7 @@ import SOS from "./Pages/Public(User)/SOS/SOS";
 import PerformanceMetrics from "./Pages/Police(Admin)/PerformanceMetrics";
 import PoliceProfile from "./Pages/Police(Admin)/PoliceProfile";
 import { SmartCaseAnalytics } from "./Pages/SmartCaseAnalytics/SmartCaseAnalytics";
+import PerformanceDashboard from "./Pages/SmartCaseAnalytics/PerformanceDashboard";
 
 export const baseUrl = "https://natural-ape-severely.ngrok-free.app";
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ function App() {
             <Route path="/performance" element={<PerformanceMetrics />} />
             <Route path="/policeprofile" element={<PoliceProfile />} />
             <Route path="/sca" element={<SmartCaseAnalytics />} />
+            <Route path="/pf" element={<PerformanceDashboard />} />
 
             <Route path="/user/login" element={<UserLogin />} />
             <Route path="/user/register" element={<UserRegister />} />
