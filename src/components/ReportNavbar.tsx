@@ -1,7 +1,21 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, FileText, Map, User, User2Icon, LogOutIcon, AlertTriangle, 
-         MessageCircle, Siren, FlagTriangleRight, ShieldCheck, Phone } from "lucide-react";
+import {
+  Menu,
+  X,
+  Home,
+  FileText,
+  Map,
+  User,
+  User2Icon,
+  LogOutIcon,
+  AlertTriangle,
+  MessageCircle,
+  Siren,
+  FlagTriangleRight,
+  ShieldCheck,
+  Phone,
+} from "lucide-react";
 import UserImg from "../assets/user.png";
 import { jwtDecode } from "jwt-decode";
 
@@ -18,18 +32,46 @@ const commonNavLinks: NavLink[] = [
 
 const officerNavLinks: NavLink[] = [
   { path: "/cases", label: "Cases", icon: <FileText className="h-5 w-5" /> },
-  { path: "/chats", label: "Chats", icon: <MessageCircle className="h-5 w-5" /> },
-  { path: "/incident/report", label: "Reports", icon: <Siren className="h-5 w-5" /> }
+  {
+    path: "/chats",
+    label: "Chats",
+    icon: <MessageCircle className="h-5 w-5" />,
+  },
+  {
+    path: "/incident/report",
+    label: "Reports",
+    icon: <Siren className="h-5 w-5" />,
+  },
 ];
 
 const userNavLinks: NavLink[] = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-  { path: "/user/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
-  { path: "/user/sos", label: "SOS", icon: <AlertTriangle className="h-5 w-5" /> },
-  { path: "/user/report", label: "Report an Incident", icon: <FlagTriangleRight className="h-5 w-5" /> },
+  {
+    path: "/user/profile",
+    label: "Profile",
+    icon: <User className="h-5 w-5" />,
+  },
+  {
+    path: "/user/sos",
+    label: "SOS",
+    icon: <AlertTriangle className="h-5 w-5" />,
+  },
+  {
+    path: "/user/report",
+    label: "Report an Incident",
+    icon: <FlagTriangleRight className="h-5 w-5" />,
+  },
   { path: "/map", label: "Map", icon: <Map className="h-5 w-5" /> },
-  { path: "/user/emergencycontacts", label: "Emergency Contacts", icon: <Phone className="h-5 w-5" /> },
-  { path: "/user/blogs", label: "Safety Tips", icon: <ShieldCheck className="h-5 w-5" /> },
+  {
+    path: "/user/emergencycontacts",
+    label: "Emergency Contacts",
+    icon: <Phone className="h-5 w-5" />,
+  },
+  {
+    path: "/user/blogs",
+    label: "Safety Tips",
+    icon: <ShieldCheck className="h-5 w-5" />,
+  },
 ];
 
 const ReportNavbar = () => {
@@ -41,15 +83,19 @@ const ReportNavbar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (token) {
       try {
         const decoded = jwtDecode(token);
         setIsLoggedIn(true);
         setIsOfficer(decoded.is_officer || false);
-        setNavLinks(decoded.is_officer ? [...commonNavLinks, ...officerNavLinks] : userNavLinks);
+        setNavLinks(
+          decoded.is_officer
+            ? [...commonNavLinks, ...officerNavLinks]
+            : userNavLinks
+        );
       } catch (error) {
-        console.error('Invalid token:', error);
+        console.error("Invalid token:", error);
         setIsLoggedIn(false);
         setIsOfficer(false);
         setNavLinks(userNavLinks);
@@ -126,7 +172,11 @@ const ReportNavbar = () => {
 
           <div className="flex justify-center items-center gap-2">
             <button className="flex justify-center items-center w-7 h-7  overflow-hidden">
-              <img src={UserImg} className="h-full w-full object-cover" alt="User" />
+              <img
+                src={UserImg}
+                className="h-full w-full object-cover"
+                alt="User"
+              />
             </button>
             <h2 className="font-bold text-2xl">Copco</h2>
           </div>
@@ -203,7 +253,11 @@ const ReportNavbar = () => {
             <div className="flex justify-between items-center mb-8">
               <div className="flex justify-center items-center gap-5">
                 <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
-                  <img src={UserImg} className="h-full w-full object-cover" alt="User" />
+                  <img
+                    src={UserImg}
+                    className="h-full w-full object-cover"
+                    alt="User"
+                  />
                 </button>
                 <h2 className="font-bold text-xl">Copco </h2>
               </div>

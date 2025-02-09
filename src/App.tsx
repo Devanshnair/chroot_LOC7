@@ -59,12 +59,9 @@ function App() {
           <Route path="map" element={<Maplayout />}>
             <Route index element={<Map />} />
           </Route>
-          <Route path="incident" element={<ReportLayout />}>
-            <Route path="/incident/report/" element={<IncidentReport />} />
-            <Route
-              path="/incident/details/:incidentId"
-              element={<IncidentDetails />}
-            />
+          <Route path="/incident" element={<ReportLayout />}>
+            <Route path="report" element={<IncidentReport />} />
+            <Route path="details/:incidentId" element={<IncidentDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
