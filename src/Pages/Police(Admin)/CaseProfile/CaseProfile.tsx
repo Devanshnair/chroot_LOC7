@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   ChevronRight,
   ChevronDown,
@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../../App";
+import { useQuery } from "@tanstack/react-query";
 
 // Mock Data (unchanged)
 const caseData = {
@@ -360,6 +362,19 @@ export default function CaseProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [activeTab, setActiveTab] = useState("files");
   const navigate = useNavigate();
+
+  const { data } = useQuery({
+    queryKey: ["file"],
+    queryFn: () => {
+      fetch(`${baseUrl}/api/cases/cases/1`, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }).then((res) => res.json());
+    },
+  });
+  console.log(data);
 
   return (
     <div className="container mx-auto p-4 space-y-4">
