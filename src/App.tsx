@@ -19,6 +19,7 @@ import IncidentDetails from "./Pages/Police(Admin)/IncidentReport/IncidentDetail
 import ReportLayout from "./layouts/ReportLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SOS from "./Pages/Public(User)/SOS/SOS";
+import { SmartCaseAnalytics } from "./Pages/SmartCaseAnalytics/SmartCaseAnalytics";
 
 export const baseUrl = "https://natural-ape-severely.ngrok-free.app";
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ function App() {
             <Route path="/cases/:caseId" element={<CaseProfile />} />
 
             <Route path="/map" element={<Map />} />
+            <Route path="/sca" element={<SmartCaseAnalytics />} />
 
             <Route path="/user/login" element={<UserLogin />} />
             <Route path="/user/register" element={<UserRegister />} />
