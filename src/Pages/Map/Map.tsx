@@ -213,7 +213,7 @@ const Map: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative z-10 w-full h-screen">
       <div className="absolute flex items-center top-4 left-4 z-[1000] ">
         <div className="relative  w-72 max-w-xl mx-auto bg-white  rounded-full shadow-lg p-2">
           <div className="flex items-center">
@@ -253,7 +253,7 @@ const Map: React.FC = () => {
           center={userLocation}
           zoom={13}
           scrollWheelZoom={true}
-          className="h-full w-full"
+          style={{ height: "100%", width: "100%" }}
           zoomControl={false}
         >
           <MapController center={selectedLocation} />

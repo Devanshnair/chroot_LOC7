@@ -31,6 +31,7 @@ const commonNavLinks: NavLink[] = [
 ];
 
 const officerNavLinks: NavLink[] = [
+  { path: "/policeprofile", label: "Profile", icon: <User className="h-5 w-5" /> },
   { path: "/cases", label: "Cases", icon: <FileText className="h-5 w-5" /> },
   {
     path: "/chats",
@@ -171,14 +172,18 @@ const Navbar = () => {
           </button>
 
           <div className="flex justify-center items-center gap-2">
-            <button className="flex justify-center items-center w-7 h-7  overflow-hidden">
-              <img
-                src={UserImg}
-                className="h-full w-full object-cover"
-                alt="User"
-              />
-            </button>
-            <h2 className="font-bold text-2xl">Copco</h2>
+            <Link to={"/"}>
+              <div className="flex">
+                <button className="flex justify-center items-center w-7 h-7  overflow-hidden">
+                  <img
+                    src={UserImg}
+                    className="h-full w-full cursor-pointer object-cover"
+                    alt="User"
+                  />
+                </button>
+                <h2 className="font-bold text-2xl">Copco</h2>
+              </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
