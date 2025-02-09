@@ -156,7 +156,7 @@ const ReportNavbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 z-50">
+    <nav className="bg-white shadow-md fixed w-full top-0 z-50">
       <div className="max-w-[1450px] mx-auto">
         <div className="px-6 py-5 flex justify-between items-center">
           {/* Mobile menu button */}
@@ -171,14 +171,18 @@ const ReportNavbar = () => {
           </button>
 
           <div className="flex justify-center items-center gap-2">
-            <button className="flex justify-center items-center w-7 h-7  overflow-hidden">
-              <img
-                src={UserImg}
-                className="h-full w-full object-cover"
-                alt="User"
-              />
-            </button>
-            <h2 className="font-bold text-2xl">Copco</h2>
+            <Link to={"/"}>
+              <div className="flex">
+                <button className="flex justify-center items-center w-7 h-7  overflow-hidden">
+                  <img
+                    src={UserImg}
+                    className="h-full w-full object-cover"
+                    alt="User"
+                  />
+                </button>
+                <h2 className="font-bold text-2xl">Copco</h2>
+              </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
