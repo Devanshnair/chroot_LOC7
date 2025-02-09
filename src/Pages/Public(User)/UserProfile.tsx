@@ -54,9 +54,9 @@ const UserProfile = () => {
         mobileNumber: data.phone_number || '',
         aadharNumber: data.aadhar || '',
         isAadharVerified: data.isAadharVerified || false,
-        photo: data.photo || null
-      }));
-      setPhotoPreview(data.photo || null);
+        photo: `${baseUrl}${data.photo}`|| null
+      }));      
+      setPhotoPreview(`${baseUrl}${data.photo}`|| null);
     } catch (err) {
       setError('Failed to load user data');
       console.error(err);
