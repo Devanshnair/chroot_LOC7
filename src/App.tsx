@@ -23,6 +23,7 @@ import PerformanceMetrics from "./Pages/Police(Admin)/PerformanceMetrics";
 import PoliceProfile from "./Pages/Police(Admin)/PoliceProfile";
 import { SmartCaseAnalytics } from "./Pages/SmartCaseAnalytics/SmartCaseAnalytics";
 import PerformanceDashboard from "./Pages/SmartCaseAnalytics/PerformanceDashboard";
+import Call from "./Pages/Call/Call";
 
 export const baseUrl = "https://natural-ape-severely.ngrok-free.app";
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ function App() {
             <Route path="/user/blogs" element={<SafetyTips />} />
           </Route>
           <Route path="/chats" element={<Chatlayout />} />
+          <Route path="/call" element={<Call />} />
           <Route path="map" element={<Maplayout />}>
             <Route index element={<Map />} />
           </Route>
