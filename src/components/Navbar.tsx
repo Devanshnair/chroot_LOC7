@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Menu,
   X,
@@ -24,8 +24,6 @@ interface NavLink {
   label: string;
   icon: React.ReactNode;
 }
-
-const decoded = jwtDecode(localStorage.getItem("accessToken") || "");
 
 const commonNavLinks: NavLink[] = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
@@ -76,16 +74,38 @@ const userNavLinks: NavLink[] = [
   },
 ];
 
-const navLinks = decoded.is_officer
-  ? [...commonNavLinks, ...officerNavLinks]
-  : userNavLinks;
-
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    localStorage.getItem("accessToken") ? true : false
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isOfficer, setIsOfficer] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [navLinks, setNavLinks] = useState<NavLink[]>(userNavLinks);
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setIsLoggedIn(true);
+        setIsOfficer(decoded.is_officer || false);
+        setNavLinks(
+          decoded.is_officer
+            ? [...commonNavLinks, ...officerNavLinks]
+            : userNavLinks
+        );
+      } catch (error) {
+        console.error("Invalid token:", error);
+        setIsLoggedIn(false);
+        setIsOfficer(false);
+        setNavLinks(userNavLinks);
+      }
+    } else {
+      setIsLoggedIn(false);
+      setIsOfficer(false);
+      setNavLinks(userNavLinks);
+    }
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -127,11 +147,12 @@ const Navbar = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // Logout function
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsLoggedIn(false); // Ensure immediate UI update
+    setIsLoggedIn(false);
+    setIsOfficer(false);
     setIsDropdownOpen(false);
+    setNavLinks(userNavLinks);
   };
 
   return (
@@ -151,7 +172,11 @@ const Navbar = () => {
 
           <div className="flex justify-center items-center gap-2">
             <button className="flex justify-center items-center w-7 h-7  overflow-hidden">
-              <img src={UserImg} className="h-full w-full object-cover" />
+              <img
+                src={UserImg}
+                className="h-full w-full object-cover"
+                alt="User"
+              />
             </button>
             <h2 className="font-bold text-2xl">Copco</h2>
           </div>
@@ -171,14 +196,14 @@ const Navbar = () => {
 
           {!isLoggedIn ? (
             <Link to={"/user/login"}>
-              <button className="text-indigo-600 hover:text-indigo-700 font-medium px-4 py-2 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <button className="text-indigo-600 hover:text-indigo-700 border border-indigo-500 font-medium px-4 py-2 rounded-md transition-colors duration-200 focus:outline-none">
                 Log In
               </button>
             </Link>
           ) : (
             <div className="relative">
               <button
-                className="ml-4 flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200"
+                className="ml-4 flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none transition-colors duration-200"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 aria-label="User menu"
               >
@@ -228,7 +253,11 @@ const Navbar = () => {
             <div className="flex justify-between items-center mb-8">
               <div className="flex justify-center items-center gap-5">
                 <button className="flex justify-center items-center w-7 h-7 ml-4 overflow-hidden">
-                  <img src={UserImg} className="h-full w-full object-cover" />
+                  <img
+                    src={UserImg}
+                    className="h-full w-full object-cover"
+                    alt="User"
+                  />
                 </button>
                 <h2 className="font-bold text-xl">Copco </h2>
               </div>

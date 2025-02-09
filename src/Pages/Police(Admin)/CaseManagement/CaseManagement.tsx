@@ -54,6 +54,7 @@ export default function CaseManagement() {
       return response.json() as Promise<CaseFromApi[]>; // Type assertion here
     },
   });
+  console.log(data);
 
   const [cases, setCases] = useState<Case[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -177,7 +178,7 @@ export default function CaseManagement() {
                 {/* Truncate description */}
                 <button
                   className="mt-4 px-4 py-2 border border-indigo-500 text-indigo-700 rounded-md hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-200"
-                  onClick={() => navigate(`/cases/${case_.caseNumber}`)}
+                  onClick={() => navigate(`/cases/${case_.id}`)}
                 >
                   View Details
                 </button>
