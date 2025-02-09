@@ -104,7 +104,7 @@ const UserLogin = () => {
           <img
             className="max-w-lg rounded-lg"
             // src={loginImage}
-            alt="Freelancer working"
+            alt="Police image"
           />
         </div>
       </div>
