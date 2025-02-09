@@ -210,7 +210,7 @@ const IncidentDetails: React.FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <img
             src={incidentDetailsData.file}
-            alt="Selected media"
+            alt="Incident media"
             className="max-w-full max-h-full"
           />
         </div>

@@ -58,10 +58,8 @@ const UserRegister: React.FC = () => {
   return (
     <div className="flex h-[90vh] items-center justify-center bg-gray-50">
       <div className="flex w-full max-w-6xl gap-36 p-8">
-        <div className="flex w-1/2 flex-col">
-          <h1 className="mb-8 text-center text-4xl font-bold text-gray-800">
-            Your hackathon journey starts here!
-          </h1>
+        <div className="flex justify-center justify-center flex-col">
+          
 
           <form onSubmit={handleForm} className="space-y-4">
             <div className="flex flex-col">
@@ -150,7 +148,7 @@ const UserRegister: React.FC = () => {
             className="max-w-lg rounded-lg"
             // src={registerImage}
             // src={imgSrc}
-            alt="Freelancer working"
+            alt="Police image"
           />
         </div>
       </div>

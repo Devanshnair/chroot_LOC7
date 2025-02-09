@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Check, Loader2, Camera, Upload } from 'lucide-react';
 import { baseUrl } from '../../App';
 import { jwtDecode } from 'jwt-decode';
+import UserProfilePic from "../../assets/pighaljaayega.jpg"
 
 interface UserData {
   fullName: string;
@@ -54,9 +55,10 @@ const UserProfile = () => {
         mobileNumber: data.phone_number || '',
         aadharNumber: data.aadhar || '',
         isAadharVerified: data.isAadharVerified || false,
-        photo: `${baseUrl}${data.photo}`|| null
+        photo: UserProfilePic ||`${baseUrl}${data.photo}`
       }));      
-      setPhotoPreview(`${baseUrl}${data.photo}`|| null);
+      setPhotoPreview( UserProfilePic || `${baseUrl}${data.photo}`);
+      console.log(`${baseUrl}${data.photo}`)
     } catch (err) {
       setError('Failed to load user data');
       console.error(err);
