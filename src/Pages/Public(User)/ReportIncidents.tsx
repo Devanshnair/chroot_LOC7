@@ -5,47 +5,66 @@ import { baseUrl } from '../../App';
 interface FormData {
   title: string;
   description: string;
-  files: File[];
+  file: File | null;
+  coordinates: [number, number] | null;
+  location: string;
+  incident_type: string;
+  status: string;
 }
 
 const ReportIncidents = () => {
   const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
-    files: []
+    file: null,
+    coordinates: null,
+    location: '',
+    incident_type: 'normal',
+    status: 'reported'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
-  const [locationString, setLocationString] = useState('');
+  const [filePreview, setFilePreview] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get user location
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const coords: [number, number] = [
           position.coords.latitude,
           position.coords.longitude
         ];
-        setUserLocation(coords);
-
-        // Convert coordinates to location string
+        setFormData(prev => ({...prev, coordinates: coords}));
+        
         try {
           const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`
           );
           const data = await response.json();
-          setLocationString(data.display_name || 'Unknown Location');
+          setFormData(prev => ({...prev, location: data.display_name}));
         } catch (err) {
-          console.error('Error getting location name:', err);
+          console.error('Error getting location:', err);
         }
       },
       (error) => {
-        console.error('Error getting location:', error);
-        setError('Unable to get location. Please enable location services.');
+        console.error('Error:', error);
+        setError('Unable to get location');
       }
     );
   }, []);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFormData(prev => ({...prev, file: file}));
+      
+      // Create file preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,38 +72,49 @@ const ReportIncidents = () => {
     setError('');
 
     try {
-      const currentDate = new Date().toISOString();
+      const submitData = new FormData();
+      submitData.append('title', formData.title);
+      submitData.append('description', formData.description);
+      submitData.append('incident_type', formData.incident_type);
+      submitData.append('status', formData.status);
       
-      const payload = {
-        title: formData.title,
-        description: formData.description,
-        coordinates: userLocation,
-        location: locationString,
-        incident_type: "normal",
-        status: 'reported',
-        created_at: currentDate,
-        updated_at: currentDate
-      };
+      if (formData.coordinates) {
+        submitData.append('coordinates', JSON.stringify(formData.coordinates));
+      }
+      if (formData.location) {
+        submitData.append('location', formData.location);
+      }
+      if (formData.file) {
+        submitData.append('file', formData.file);
+      }
+      console.log(formData.file);
+      
 
       const response = await fetch(`${baseUrl}/api/cases/incidents/`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'ngrok-skip-browser-warning': '444'
         },
-        body: JSON.stringify(payload)
+        body: submitData
       });
 
       if (!response.ok) throw new Error('Failed to submit report');
 
-      alert('Incident reported successfully!');
+      alert('Report submitted successfully!');
+      // Reset form
       setFormData({
         title: '',
         description: '',
-        files: []
+        file: null,
+        coordinates: null,
+        location: '',
+        incident_type: 'normal',
+        status: 'reported'
       });
+      setFilePreview(null);
     } catch (err) {
-      setError('Failed to submit report. Please try again.');
+      setError('Failed to submit report');
       console.error(err);
     } finally {
       setLoading(false);
@@ -97,9 +127,7 @@ const ReportIncidents = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium mb-1">
-            Title
-          </label>
+          <label className="block text-sm font-medium mb-1">Title</label>
           <input
             type="text"
             value={formData.title}
@@ -110,9 +138,7 @@ const ReportIncidents = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">
-            Description
-          </label>
+          <label className="block text-sm font-medium mb-1">Description</label>
           <textarea
             value={formData.description}
             onChange={(e) => setFormData({...formData, description: e.target.value})}
@@ -123,17 +149,13 @@ const ReportIncidents = () => {
 
         <div>
           <label className="block text-sm font-medium mb-1">
-            Upload Evidence (Photos/Videos)
+            Upload Evidence (Photo/Video)
           </label>
-          <div className="border-2 border-dashed rounded-lg p-4 text-center">
+          <div className="border-2 border-dashed rounded-lg p-4">
             <input
               type="file"
-              multiple
               accept="image/*,video/*"
-              onChange={(e) => setFormData({
-                ...formData, 
-                files: Array.from(e.target.files || [])
-              })}
+              onChange={handleFileChange}
               className="hidden"
               id="file-upload"
             />
@@ -142,12 +164,16 @@ const ReportIncidents = () => {
               className="cursor-pointer flex items-center justify-center gap-2 text-gray-600"
             >
               <Upload size={20} />
-              <span>Click to upload files</span>
+              <span>Click to upload file</span>
             </label>
           </div>
-          {formData.files.length > 0 && (
-            <div className="mt-2 text-sm text-gray-600">
-              {formData.files.length} file(s) selected
+          {filePreview && (
+            <div className="mt-2">
+              {formData.file?.type.startsWith('image/') ? (
+                <img src={filePreview} alt="Preview" className="h-32 object-cover rounded" />
+              ) : (
+                <video src={filePreview} className="h-32" controls />
+              )}
             </div>
           )}
         </div>
@@ -158,18 +184,19 @@ const ReportIncidents = () => {
 
         <button
           type="submit"
-          disabled={loading || !userLocation}
-          className={`w-full bg-indigo-600 text-white py-2 px-4 rounded-lg
-            flex items-center justify-center gap-2 
-            ${loading || !userLocation ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'}
-            transition-colors duration-200`}
+          disabled={loading}
+          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg
+            hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center gap-2"
         >
           {loading ? (
-            <Loader className="animate-spin" size={20} />
+            <>
+              <Loader className="animate-spin" size={20} />
+              Submitting...
+            </>
           ) : (
             <>
               <Send size={20} />
-              Report Incident
+              Submit Report
             </>
           )}
         </button>
