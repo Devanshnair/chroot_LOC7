@@ -208,47 +208,16 @@ const IncidentDetails: React.FC = () => {
       <div className="bg-white shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">Media</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {incidentDetailsData.media.map((item, index) => (
-            <div
-              key={index}
-              className="cursor-pointer"
-              onClick={() => setSelectedMedia(item.url)}
-            >
-              {item.type === "photo" ? (
-                <div className="relative aspect-w-1 aspect-h-1">
-                  <img
-                    src={item.url || "/placeholder.svg"}
-                    alt={`Evidence ${index + 1}`}
-                    className="object-cover rounded-lg"
-                  />
-                  <Camera className="absolute top-2 left-2 w-6 h-6 text-white" />
-                </div>
-              ) : (
-                <div className="relative aspect-w-16 aspect-h-9">
-                  <video src={item.url} className="object-cover rounded-lg" />
-                  <Video className="absolute top-2 left-2 w-6 h-6 text-white" />
-                </div>
-              )}
-            </div>
-          ))}
+          <img
+            src={incidentDetailsData.file}
+            alt="Selected media"
+            className="max-w-full max-h-full"
+          />
         </div>
       </div>
       {selectedMedia && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
           <div className="max-w-3xl max-h-full p-4">
-            {selectedMedia.endsWith(".mp4") ? (
-              <video
-                src={selectedMedia}
-                controls
-                className="max-w-full max-h-full"
-              />
-            ) : (
-              <img
-                src={selectedMedia || "/placeholder.svg"}
-                alt="Selected media"
-                className="max-w-full max-h-full"
-              />
-            )}
             <button
               onClick={() => setSelectedMedia(null)}
               className="absolute top-4 right-4 text-white text-2xl"

@@ -1,6 +1,12 @@
 import type React from "react";
 import { Chat } from "../layouts/Chatlayout";
-import { ArrowLeft, ArrowLeftCircleIcon, MessageCircle, MessageSquare, User2Icon } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowLeftCircleIcon,
+  MessageCircle,
+  MessageSquare,
+  User2Icon,
+} from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -24,9 +30,9 @@ const ChatList: React.FC<ChatListProps> = ({
   const navigate = useNavigate();
   return (
     <div className="chat-list border-r w-full md:w-1/4">
-      <h2 className="text-3xl font-medium  p-4 flex items-center bg-indigo-50">
+      <h2 className="text-xl font-medium  p-4 flex items-center bg-indigo-50">
         <button onClick={() => navigate(-1)}>
-          <ArrowLeft className="size-8 mr-3" />
+          <ArrowLeft className="size-7 mr-3" />
         </button>{" "}
         Chats
       </h2>
@@ -48,15 +54,15 @@ const ChatList: React.FC<ChatListProps> = ({
         {chats.map((chat) => (
           <li
             key={chat.userId}
-            className={`${chat.userId === selectedChat ? "selected" : ""} flex gap-3 items-center text-2xl`}
+            className={`${
+              chat.userId === selectedChat ? "selected" : ""
+            } flex gap-3 items-center text-xl`}
             onClick={() => {
               onSelectChat(chat.userId);
               if (window.innerWidth < 768) setView("chat-window");
             }}
           >
-            <button
-              className="h-8 w-8 p-1 rounded-full bg-slate-300 relative cursor-pointer"
-            >
+            <button className="h-8 w-8 p-1 rounded-full bg-slate-300 relative cursor-pointer">
               <User2Icon className="h-full w-full" color="white" />
             </button>
             {chat.name}
